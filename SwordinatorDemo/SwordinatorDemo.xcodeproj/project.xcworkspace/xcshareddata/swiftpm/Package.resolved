@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "MBProgressHUD",
+        "repositoryURL": "git@github.com:jdg/MBProgressHUD.git",
+        "state": {
+          "branch": "master",
+          "revision": "c843e4c86d320a11552898646effa8000042ab16",
+          "version": null
+        }
+      },
+      {
+        "package": "SnapKit",
+        "repositoryURL": "git@github.com:SnapKit/SnapKit.git",
+        "state": {
+          "branch": "develop",
+          "revision": "466db39ee4ef32b0f7c8cd9f009aaf42f80beace",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

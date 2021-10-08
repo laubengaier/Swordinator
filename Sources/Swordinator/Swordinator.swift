@@ -1,0 +1,60 @@
+import UIKit
+
+public protocol Coordinator: AnyObject
+{
+    var childCoordinators: [Coordinator] { get set }
+    func start()
+    func handle(step: Step)
+}
+
+public extension Coordinator {
+    func handle(step: Step) {
+        print("⚠️ step handler is not implemented for \(String(describing: Self.self))")
+    }
+}
+
+public protocol ParentCoordinated: AnyObject
+{
+    associatedtype Parent
+    var parent: Parent? { get set }
+}
+
+public protocol Coordinated: AnyObject
+{
+    associatedtype Coordinator
+    var coordinator: Coordinator? { get set }
+}
+
+// MARK: - Ease of use
+public protocol TabBarControllerCoordinator: Coordinator
+{
+    var tabBarController: UITabBarController { get }
+}
+
+public protocol NavigationControllerCoordinator: Coordinator
+{
+    var navigationController: UINavigationController { get }
+}
+
+public protocol SplitControllerCoordinator: Coordinator
+{
+    var splitController: UISplitViewController { get }
+}
+
+// MARK: Deeplinks
+public protocol Deeplinkable
+{
+    var rootCoordinator: (Coordinator & Deeplinkable)? { get }
+    func handle(deepLink: DeeplinkStep)
+}
+
+public extension Deeplinkable {
+    func handle(deepLink: DeeplinkStep) {
+        if let root = rootCoordinator {
+            root.handle(deepLink: deepLink)
+        }
+    }
+}
+
+public protocol Step {}
+public protocol DeeplinkStep {}
