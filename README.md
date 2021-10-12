@@ -18,6 +18,11 @@ dependencies: [
 
 ## Use Swordinator
 
+These steps should provide a simple way of getting started. If something is not clear please take a look at the demo provided or create an issue.
+
+##### Quicknote:
+The simplest way is to go forward with implementing `Step` and `handle(step: Step)` which simplifies the coordination but if you want even more control or don't like steps there is a delegate example in the demo (ProfileCoordinator). 
+
 #### 1. Define Steps
 
 Create a new class called `AppStep` or anything you like that will define the steps your application can do.
@@ -47,6 +52,7 @@ Create a new class called `AppCoordinator` or similar that defines the entry poi
 class AppCoordinator: Coordinator 
 {
     let window: UIWindow
+    var rootCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     
     let services: AppServices
@@ -90,64 +96,6 @@ extension AppCoordinator
         coordinator.parent = self
         rootCoordinator = coordinator
         window.rootViewController = nvc
-    }
-}
-```
-
-<hr/>
-
-``` Swift
-class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated
-{
-    var parent: Coordinator?
-    var navigationController: UINavigationController
-    var childCoordinators: [Coordinator] = []
-    
-    let services: AppServices
-    
-    init(navigationController: UINavigationController, services: AppServices) {
-        self.navigationController = navigationController
-        self.services = services
-        start()
-    }
-
-    func start() {
-        let vc = TaskListViewController()
-        vc.coordinator = self
-        self.navigationController.setViewControllers([vc], animated: false)
-    }
-    
-    func handle(step: Step) {
-        guard let step = step as? AppStep else { return }
-        // handle steps
-        // make sure cleanup the childCoordinators to avoid memory leaks
-        switch step {
-        case .taskDetailCompleted:
-            childCoordinators.removeAll { $0 is TaskDetailCoordinator }
-        default:
-            () 
-        }
-    }
-}
-
-extension TaskListCoordinator 
-{
-    func showTaskDetail() {
-        let nvc = UINavigationController()
-        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services)
-        coordinator.parent = self
-        navigationController.present(nvc, animated: true, completion: nil)
-        childCoordinators.append(coordinator)
-    }
-}
-
-class TaskListViewController: UIViewController, Coordinated 
-{
-
-    weak var coordinator: Coordinator?
-
-    func doSomething() {
-        coordinator?.handle(step: AppStep.taskDetail)
     }
 }
 ```
