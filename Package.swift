@@ -4,11 +4,9 @@ import PackageDescription
 
 let package = Package(
     name: "Swordinator",
+    platforms: [.iOS(.v14)],
     products: [
-        .library(
-            name: "Swordinator",
-            targets: ["Swordinator"]
-        ),
+        .library(name: "Swordinator", targets: ["Swordinator"]),
     ],
     dependencies: [
         //
