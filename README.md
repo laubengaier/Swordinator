@@ -21,7 +21,7 @@ dependencies: [
 These steps should provide a simple way of getting started. If something is not clear please take a look at the demo provided or create an issue.
 
 ##### Quicknote:
-The simplest way is to go forward with implementing `Step` and `handle(step: Step)` which simplifies the coordination but if you want even more control or don't like steps there is a delegate example in the demo (ProfileCoordinator). 
+The simplest way is to go forward with implementing `Step` and using `handle(step: Step)` which simplifies the coordination but if you want even more control or don't like steps there is a delegate example in the demo (ProfileCoordinator). 
 
 #### 1. Define Steps
 
@@ -122,7 +122,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
 }
 ```
 
+## Deeplinks
 
+If you want to support deeplinks in your application you just need to let your Coordinator classes adapt to `Deeplinkable` as following:
+
+``` Swift
+class AppCoordinator: Coordinator, Deeplinkable {
+
+    //...
+    var rootCoordinator: (Coordinator & Deeplinkable)?
+    
+    //...
+    
+    func handle(deepLink: DeeplinkStep) {
+        if let root = rootCoordinator {
+            root.handle(deepLink: deepLink)
+        }
+    }
+}
+```
+
+This comes in pretty handy when dealing with Universal Links or Push Notifications. The `rootCoordinator` should be seen as the current active Coordinator so if there is a event then it can be forwarded to the top most active coordinator or handled anywhere in between.
+
+In the Demo application there is a `taskDetail` deeplink that will be forwarded to either the TaskList or Profile and handled there. 
+
+Illustrated here [Demo Flow](#pattern)
 
 ## Demo Application
 
