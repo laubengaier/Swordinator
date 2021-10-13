@@ -17,6 +17,10 @@ class LoginViewModel {
         self.services = services
     }
     
+    deinit {
+        print("🗑 \(String(describing: Self.self))")
+    }
+    
     func loginWithSIWA() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             self.services.userDidLogin()

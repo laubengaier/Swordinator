@@ -22,6 +22,11 @@ class AppServices {
         UserDefaults.standard.set(false, forKey: "kSwordinatorLoggedIn")
     }
     
+    // Sync
+    var isSyncRequired: Bool {
+        return false
+    }
+    
     // Data
     var tasks: [Task] = [
         Task(id: 0, name: "Buy Milk"),

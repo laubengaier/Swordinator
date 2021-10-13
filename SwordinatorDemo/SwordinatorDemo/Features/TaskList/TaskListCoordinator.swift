@@ -17,12 +17,7 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
     var childCoordinators: [Coordinator] = []
     
     let services: AppServices
-    
-    enum Event {
-        case showLogin
-        case logout
-    }
-    
+
     init(navigationController: UINavigationController, services: AppServices) {
         self.navigationController = navigationController
         self.services = services

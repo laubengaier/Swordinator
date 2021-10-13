@@ -148,6 +148,23 @@ In the Demo application there is a `taskDetail` deeplink that will be forwarded 
 
 Illustrated here [Demo Flow](#pattern)
 
+## Important Notice
+
+### Memory Leaks
+
+To avoid memory leaks you should pay attention to releasing the Coordinators from `childCoordinators` when they are not used anymore.
+
+For Example:
+``` Swift
+    func handle(step: Step) {
+        guard let step = step as? AppStep else { return }
+        switch step {
+        case .taskDetailCompleted:
+            childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+        }
+    }
+```
+
 ## Demo Application
 
 A demo is provided to show the core mechanics and how to apply the coordinator pattern.

@@ -22,6 +22,10 @@ class LoginViewController: UIViewController, Coordinated {
         super.init(nibName: nil, bundle: nil)
     }
     
+    deinit {
+        print("🗑 \(String(describing: Self.self))")
+    }
+    
     required init?(coder: NSCoder) { return nil }
     
     // MARK: UI

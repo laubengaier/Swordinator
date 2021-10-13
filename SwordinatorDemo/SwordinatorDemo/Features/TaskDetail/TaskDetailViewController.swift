@@ -39,7 +39,8 @@ class TaskDetailViewController: UIViewController, Coordinated {
     }
     
     lazy var closeBarButton: UIBarButtonItem = {
-        let view = UIBarButtonItem(systemItem: .close, primaryAction: UIAction(handler: { _ in
+        let view = UIBarButtonItem(systemItem: .close, primaryAction: UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
             self.coordinator?.handle(step: AppStep.dismiss)
         }), menu: nil)
         return view

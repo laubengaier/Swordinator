@@ -9,25 +9,15 @@ import Foundation
 import UIKit
 import Swordinator
 
-protocol DashboardCoordinatorHandling: AnyObject
-{
-    func handle(event: DashboardCoordinator.Event)
-}
-
 class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordinated, Deeplinkable
 {
     weak var rootCoordinator: (Coordinator & Deeplinkable)?
-    var parent: DashboardCoordinatorHandling?
+    var parent: Coordinator?
     var tabBarController: UITabBarController
     var childCoordinators: [Coordinator] = []
     
     let services: AppServices
-    
-    enum Event {
-        case logout
-        case showLogin
-    }
-    
+
     init(tabBarController: UITabBarController, services: AppServices) {
         self.tabBarController = tabBarController
         self.services = services
@@ -111,7 +101,7 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
     func logout() {
         childCoordinators.removeAll { $0 is TaskListCoordinator }
         childCoordinators.removeAll { $0 is ProfileCoordinator }
-        parent?.handle(event: .logout)
+        parent?.handle(step: AppStep.logout)
     }
 }
 

@@ -23,12 +23,12 @@ class AppCoordinator: Coordinator, Deeplinkable {
     }
     
     deinit {
-        print("AppCoordinator deinit")
+        print("🗑 \(String(describing: Self.self))")
     }
     
     func start() {
         if services.isAuthenticated {
-            self.showTabbar()
+            services.isSyncRequired ? showSync() : showTabbar()
         } else {
             self.showLogin()
         }
@@ -37,7 +37,11 @@ class AppCoordinator: Coordinator, Deeplinkable {
     func handle(step: Step) {
         guard let step = step as? AppStep else { return }
         switch step {
+        case .logout:
+            showLogin()
         case .authCompleted:
+            services.isSyncRequired ? showSync() : showTabbar()
+        case .syncCompleted:
             showTabbar()
         default:
             return
@@ -77,17 +81,12 @@ extension AppCoordinator {
         rootCoordinator = coordinator
         window.rootViewController = nvc
     }
-}
-
-// MARK: - DashboardCoordinatorHandling
-extension AppCoordinator: DashboardCoordinatorHandling {
-    func handle(event: DashboardCoordinator.Event) {
-        switch event
-        {
-            case .showLogin:
-                () // do something
-            case .logout:
-                showLogin()
-        }
+    
+    private func showSync() {
+        let nvc = UINavigationController()
+        let coordinator = SyncCoordinator(navigationController: nvc, services: services)
+        coordinator.parent = self
+        rootCoordinator = coordinator
+        window.rootViewController = nvc
     }
 }

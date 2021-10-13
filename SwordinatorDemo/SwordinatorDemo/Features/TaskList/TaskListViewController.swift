@@ -25,7 +25,8 @@ class TaskListViewController: UIViewController, Coordinated {
     
     // MARK: UI
     lazy var overlayView: UIButton = {
-        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in
+        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
             self.hideAddTaskView()
         }))
         view.backgroundColor = .black.withAlphaComponent(0.75)
@@ -65,7 +66,8 @@ class TaskListViewController: UIViewController, Coordinated {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "plus")
         config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-        let view = UIButton(configuration: config, primaryAction: UIAction(handler: { _ in
+        let view = UIButton(configuration: config, primaryAction: UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
             self.showAddTaskView()
         }))
         view.layer.cornerRadius = 25

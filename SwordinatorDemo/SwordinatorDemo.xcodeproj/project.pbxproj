@@ -36,6 +36,8 @@
 		F738C5C92715551E00EA5812 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F738C5C82715551E00EA5812 /* TaskListViewModel.swift */; };
 		F74BDC072710B17800B3F68A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F74BDC052710B17800B3F68A /* Main.storyboard */; };
 		F74BDC0A2710B26600B3F68A /* TaskListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74BDC092710B26600B3F68A /* TaskListCell.swift */; };
+		F7D3056C2716A298008B2552 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3056B2716A298008B2552 /* SyncCoordinator.swift */; };
+		F7D3056E2716A39F008B2552 /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3056D2716A39F008B2552 /* SyncViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,8 @@
 		F738C5C82715551E00EA5812 /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		F74BDC062710B17800B3F68A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F74BDC092710B26600B3F68A /* TaskListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCell.swift; sourceTree = "<group>"; };
+		F7D3056B2716A298008B2552 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
+		F7D3056D2716A39F008B2552 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +136,7 @@
 				A186D21827104B3C0047BA45 /* AppStep.swift */,
 				A186D20A27104B3C0047BA45 /* AppCoordinator.swift */,
 				A186D21927104B3C0047BA45 /* Login */,
+				F7D3056A2716A267008B2552 /* Sync */,
 				A186D20F27104B3C0047BA45 /* Dashboard */,
 				A186D21127104B3C0047BA45 /* TaskList */,
 				A186D20B27104B3C0047BA45 /* TaskDetail */,
@@ -239,6 +244,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		F7D3056A2716A267008B2552 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				F7D3056B2716A298008B2552 /* SyncCoordinator.swift */,
+				F7D3056D2716A39F008B2552 /* SyncViewController.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -328,6 +342,8 @@
 				F738C5BD2713F89E00EA5812 /* TaskDetailNameCell.swift in Sources */,
 				A186D22827104B3C0047BA45 /* AppStep.swift in Sources */,
 				A186D22027104B3C0047BA45 /* TaskDetailViewModel.swift in Sources */,
+				F7D3056E2716A39F008B2552 /* SyncViewController.swift in Sources */,
+				F7D3056C2716A298008B2552 /* SyncCoordinator.swift in Sources */,
 				F738C5C2271400E900EA5812 /* TaskDetailReminderViewController.swift in Sources */,
 				F738C5C92715551E00EA5812 /* TaskListViewModel.swift in Sources */,
 				F738C5C5271411A100EA5812 /* AppServices.swift in Sources */,
@@ -490,7 +506,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2255UBWM66;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwordinatorDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -517,7 +533,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2255UBWM66;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwordinatorDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

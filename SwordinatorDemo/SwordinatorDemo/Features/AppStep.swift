@@ -20,6 +20,10 @@ enum AppStep: Step {
     case authCompleted
     case logout
     
+    // sync
+    case sync
+    case syncCompleted
+    
     // navigation
     case close
     case dismiss
