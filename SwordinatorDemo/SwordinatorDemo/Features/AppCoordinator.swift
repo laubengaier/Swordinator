@@ -65,6 +65,7 @@ class AppCoordinator: Coordinator, Deeplinkable {
     }
 }
 
+// MARK: - Actions
 extension AppCoordinator {
     private func showTabbar() {
         let tbc = UITabBarController()

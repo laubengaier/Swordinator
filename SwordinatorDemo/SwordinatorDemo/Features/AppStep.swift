@@ -11,9 +11,10 @@ import Swordinator
 enum AppStep: Step {
     
     // task
-    case taskDetail(task: Task)
+    case taskDetail(task: Task, completion: (() -> Void)?)
     case taskDetailReminder(task: Task)
     case taskDetailPriority(task: Task)
+    case lazyTaskDetail(id: Int)
     
     // auth
     case authWithSIWA
@@ -32,6 +33,7 @@ enum AppStep: Step {
 
 enum AppDeeplinkStep: DeeplinkStep {
     case taskDetail(task: Task)
+    case lazyTaskDetail(id: Int)
     case tasks
     case profile
     case logout
@@ -57,8 +59,8 @@ extension AppDeeplinkStep {
         
         if url.absoluteString.starts(with: "swordinator://newTask") {
             return .taskDetail(task: Task(id: 10, name: "Test1"))
-        } else if host == "tasks", path == "1" {
-            return .taskDetail(task: Task(id: 1, name: "Test2"))
+        } else if host == "tasks", let path = Int(url.pathComponents[1]) {
+            return .lazyTaskDetail(id: path)
         } else if host == "tasks" {
             return .tasks
         } else if host == "profile" {

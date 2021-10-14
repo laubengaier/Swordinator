@@ -49,4 +49,19 @@ class TaskListCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) { return nil }
+    
+    func setup(task: Task) {
+        self.completedButton.isSelected = task.completed
+        if task.completed {
+            self.titleLabel.attributedText = try? NSAttributedString(markdown: "~" + task.name + "~")
+        } else {
+            self.titleLabel.attributedText = NSAttributedString(string: task.name)
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        completedButton.isSelected = false
+        self.titleLabel.attributedText = NSAttributedString()
+    }
 }

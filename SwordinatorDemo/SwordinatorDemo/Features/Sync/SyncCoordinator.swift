@@ -46,5 +46,9 @@ class SyncCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deepl
             ()
         }
     }
+}
+
+// MARK: - Actions
+extension SyncCoordinator {
     
 }

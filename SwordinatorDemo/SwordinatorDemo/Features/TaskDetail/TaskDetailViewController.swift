@@ -95,7 +95,11 @@ extension TaskDetailViewController: UITableViewDataSource, UITableViewDelegate {
         switch item {
         case .title:
             let cell = tableView.dequeueReusableCell(withIdentifier: TaskDetailNameCell.identifier, for: indexPath) as! TaskDetailNameCell
-            cell.nameTextField.text = viewModel.task.name
+            cell.setup(task: viewModel.task)
+            cell.onChangeCompleted = { [weak self] completed in
+                guard let self = self else { return }
+                self.viewModel.task.completed = completed
+            }
             cell.onChangeName = { [weak self] text in
                 guard let self = self else { return }
                 self.viewModel.task.name = text ?? ""

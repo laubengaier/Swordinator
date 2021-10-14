@@ -12,11 +12,14 @@ class TaskDetailNameCell: UITableViewCell {
     
     static let identifier = "TaskDetailNameCell"
     
+    var onChangeCompleted: ((Bool) -> Void)?
     var onChangeName: ((String?) -> Void)?
     
     lazy var completedButton: UIButton = {
-        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in
+        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
             self.completedButton.isSelected = !self.completedButton.isSelected
+            self.onChangeCompleted?(self.completedButton.isSelected)
         }))
         view.setImage(UIImage(systemName: "circle"), for: .normal)
         view.setImage(UIImage(systemName: "checkmark.circle"), for: .selected)
@@ -28,6 +31,7 @@ class TaskDetailNameCell: UITableViewCell {
         let view = UITextField()
         view.placeholder = "Enter name..."
         view.font = .systemFont(ofSize: 14, weight: .medium)
+        view.delegate = self
         return view
     }()
     
@@ -58,11 +62,17 @@ class TaskDetailNameCell: UITableViewCell {
         super.prepareForReuse()
         nameTextField.text = ""
     }
+    
+    func setup(task: Task) {
+        self.nameTextField.text = task.name
+        self.completedButton.isSelected = task.completed
+    }
 }
 
 extension TaskDetailNameCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         onChangeName?(textField.text)
+        nameTextField.resignFirstResponder()
         return true
     }
 }

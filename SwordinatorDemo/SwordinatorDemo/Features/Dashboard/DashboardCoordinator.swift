@@ -75,7 +75,10 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
             // handle here
         }
     }
-    
+}
+
+// MARK: - Actions
+extension DashboardCoordinator {
     private func showTasks(shouldSelect: Bool = false) {
         guard
             let taskListCoordinator = childCoordinators.filter({ $0 is TaskListCoordinator }).first as? TaskListCoordinator
@@ -98,13 +101,14 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
         print("🔄 changed rootCoordinator to profile")
     }
     
-    func logout() {
+    private func logout() {
         childCoordinators.removeAll { $0 is TaskListCoordinator }
         childCoordinators.removeAll { $0 is ProfileCoordinator }
         parent?.handle(step: AppStep.logout)
     }
 }
 
+// MARK: - UITabBarControllerDelegate
 extension DashboardCoordinator: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         switch tabBarController.selectedIndex {
@@ -119,6 +123,7 @@ extension DashboardCoordinator: UITabBarControllerDelegate {
     }
 }
 
+// MARK: - ProfileCoordinatorHandling
 extension DashboardCoordinator: ProfileCoordinatorHandling {
     func handle(event: ProfileCoordinator.Event) {
         switch event {

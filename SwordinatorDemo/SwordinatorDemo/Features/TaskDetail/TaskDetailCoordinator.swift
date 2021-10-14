@@ -18,15 +18,17 @@ class TaskDetailCoordinator: NavigationControllerCoordinator, ParentCoordinated,
     
     let services: AppServices
     var task: Task
+    var taskCompletion: (() -> Void)?
     
     enum Event {
         case close
     }
     
-    init(navigationController: UINavigationController, services: AppServices, task: Task) {
+    init(navigationController: UINavigationController, services: AppServices, task: Task, taskCompletion: (() -> Void)? = nil) {
         self.navigationController = navigationController
         self.services = services
         self.task = task
+        self.taskCompletion = taskCompletion
         start()
     }
     
@@ -54,8 +56,10 @@ class TaskDetailCoordinator: NavigationControllerCoordinator, ParentCoordinated,
         case .taskDetailPriority(let task):
             showPriority(task: task)
         case .close:
+            taskCompletion?()
             parent?.handle(step: AppStep.close)
         case .dismiss:
+            taskCompletion?()
             navigationController.dismiss(animated: true, completion: nil)
             parent?.handle(step: AppStep.close)
         default:
@@ -70,13 +74,16 @@ class TaskDetailCoordinator: NavigationControllerCoordinator, ParentCoordinated,
             // handle here
         }
     }
-    
-    func showReminder(task: Task) {
+}
+
+// MARK: - Actions
+extension TaskDetailCoordinator {
+    private func showReminder(task: Task) {
         let vc = TaskDetailReminderViewController()
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func showPriority(task: Task) {
+    private func showPriority(task: Task) {
         let vc = TaskDetailReminderViewController()
         navigationController.pushViewController(vc, animated: true)
     }

@@ -33,4 +33,10 @@ class AppServices {
         Task(id: 1, name: "Walk the dog"),
         Task(id: 2, name: "Code something nice")
     ]
+    
+    func lazyTask(id: Int, completion: @escaping ((Task?) -> Void)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+            completion(self.tasks.filter({ $0.id == id }).first)
+        }
+    }
 }

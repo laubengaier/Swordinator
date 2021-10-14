@@ -52,3 +52,8 @@ class LoginCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deep
         // login needs no deeplink handling
     }
 }
+
+// MARK: - Actions
+extension LoginCoordinator {
+    
+}

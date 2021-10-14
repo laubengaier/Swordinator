@@ -193,12 +193,14 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let task = viewModel.tasks[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListCell.identifier, for: indexPath) as! TaskListCell
-        cell.titleLabel.text = task.name
+        cell.setup(task: task)
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let task = viewModel.tasks[indexPath.row]
-        coordinator?.handle(step: AppStep.taskDetail(task: task))
+        coordinator?.handle(step: AppStep.taskDetail(task: task, completion: { [weak self] in
+            self?.tableView.reloadData()
+        }))
     }
 }
 

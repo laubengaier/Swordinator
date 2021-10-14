@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Swordinator
+import MBProgressHUD
 
 protocol ProfileCoordinatorHandling: AnyObject
 {
@@ -68,18 +69,38 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
             {
             case .taskDetail(let task):
                 self.showTaskDetail(task: task)
+            case .lazyTaskDetail(let id):
+                showTaskDetailLazy(id: id)
             default:
                 ()
             }
         }
     }
-    
-    func showTaskDetail(task: Task) {
+}
+
+// MARK: - Actions
+extension ProfileCoordinator {
+    private func showTaskDetail(task: Task) {
         let nvc = UINavigationController()
         let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task)
         coordinator.parent = self
         navigationController.present(nvc, animated: true, completion: nil)
         childCoordinators.append(coordinator)
+    }
+    
+    private func showTaskDetailLazy(id: Int) {
+        MBProgressHUD.showAdded(to: navigationController.view, animated: true)
+        services.lazyTask(id: id) { task in
+            MBProgressHUD.hide(for: self.navigationController.view, animated: true)
+            guard let task = task else { return }
+            self.showTaskDetail(task: task)
+        }
+    }
+    
+    private func showAlert(title: String?, message: String) {
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        navigationController.present(alertVC, animated: true, completion: nil)
     }
 }
 
