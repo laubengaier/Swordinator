@@ -72,7 +72,7 @@ class ProfileViewController: UIViewController, Coordinated {
         super.viewDidLoad()
         title = "Profile"
         view.backgroundColor = .systemBackground
-        navigationItem.setLeftBarButton(settingsBarButton, animated: true)
+        navigationItem.setRightBarButton(settingsBarButton, animated: true)
         
         view.addSubview(profilePictureButton)
         profilePictureButton.snp.makeConstraints { make in

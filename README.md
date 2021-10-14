@@ -156,13 +156,13 @@ To avoid memory leaks you should pay attention to releasing the Coordinators fro
 
 For Example:
 ``` Swift
-    func handle(step: Step) {
-        guard let step = step as? AppStep else { return }
-        switch step {
-        case .taskDetailCompleted:
-            childCoordinators.removeAll { $0 is TaskDetailCoordinator }
-        }
+func handle(step: Step) {
+    guard let step = step as? AppStep else { return }
+    switch step {
+    case .taskDetailCompleted:
+        childCoordinators.removeAll { $0 is TaskDetailCoordinator }
     }
+}
 ```
 
 ## Demo Application
@@ -173,6 +173,21 @@ A demo is provided to show the core mechanics and how to apply the coordinator p
 | ------------- | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/17570451/136762041-b12a5a5f-895c-4662-a9ca-57867f7e89f3.png" width=200/> | <img src="https://user-images.githubusercontent.com/17570451/136762029-8d63e976-a7c1-41a1-bbf6-f433ffcb971d.png" width=200/> | <img src="https://user-images.githubusercontent.com/17570451/136762043-6b418009-7c27-462d-99b1-5235a165736b.png" width=200/> |
 
+### Deeplinks
+
+Run the following commands in your terminal to test deeplinks with the simulator
+
+``` bash
+# lazy load and show a task
+xcrun simctl openurl booted swordinator://tasks/1
+# taskList, switch tab
+xcrun simctl openurl booted swordinator://tasks
+# profile, switch tab
+xcrun simctl openurl booted swordinator://profile
+# logout
+xcrun simctl openurl booted swordinator://logout
+```
+
 ## Pattern
 
 ### Demo Flow
@@ -180,3 +195,11 @@ A demo is provided to show the core mechanics and how to apply the coordinator p
 This is an illustration of how the pattern is used in the demo application
 
 ![SwordinatorExampleFlow](https://user-images.githubusercontent.com/17570451/136760980-5ba33998-ce5a-479a-90e4-b07d52b48309.png)
+
+## Mentions
+
+**RxFlow**
+This project is inspired by [RxFlow](https://github.com/RxSwiftCommunity/RxFlow) which is a great way to use Coordinators in a reactive manner but imho it's not always clear what is happening behind the scenes so this project should provide a more simplified way to integrate and gain more control. 
+
+## License
+This code is distributed under the MIT license. See the `LICENSE` file for more info.
