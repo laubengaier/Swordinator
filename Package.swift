@@ -18,7 +18,9 @@ let package = Package(
         ),
         .testTarget(
             name: "SwordinatorTests",
-            dependencies: ["Swordinator"]
+            dependencies: [
+                "Swordinator"
+            ]
         ),
     ],
     swiftLanguageVersions: [.v5]

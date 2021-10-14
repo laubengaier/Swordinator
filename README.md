@@ -1,5 +1,5 @@
 
-<img src ="https://user-images.githubusercontent.com/17570451/136767032-c2da8d49-b450-4cdc-8b1f-80e282e3c46e.png" style="max-width: 100%;"/>
+![Swordinator: Minimal Coordinator Pattern for Swift](https://user-images.githubusercontent.com/17570451/136767032-c2da8d49-b450-4cdc-8b1f-80e282e3c46e.png)
 
 Swordinator is a minimal, lightweight and easy customizable navigation framework for iOS applications.
 
