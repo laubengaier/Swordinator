@@ -12,9 +12,17 @@ class TaskListCell: UITableViewCell {
     
     static let identifier = "TaskListCell"
     
+    var task: Task? {
+        didSet {
+            guard let task = task else { return }
+            updateView(task: task)
+        }
+    }
+    
     lazy var completedButton: UIButton = {
-        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in
-            self.completedButton.isSelected = !self.completedButton.isSelected
+        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.toggleCompleted()
         }))
         view.setImage(UIImage(systemName: "circle"), for: .normal)
         view.setImage(UIImage(systemName: "checkmark.circle"), for: .selected)
@@ -51,12 +59,23 @@ class TaskListCell: UITableViewCell {
     required init?(coder: NSCoder) { return nil }
     
     func setup(task: Task) {
+        self.task = task
+    }
+    
+    private func updateView(task: Task) {
         self.completedButton.isSelected = task.completed
         if task.completed {
             self.titleLabel.attributedText = try? NSAttributedString(markdown: "~" + task.name + "~")
         } else {
             self.titleLabel.attributedText = NSAttributedString(string: task.name)
         }
+    }
+    
+    private func toggleCompleted() {
+        self.completedButton.isSelected = !self.completedButton.isSelected
+        self.task?.completed = self.completedButton.isSelected
+        guard let task = self.task else { return }
+        self.updateView(task: task)
     }
     
     override func prepareForReuse() {

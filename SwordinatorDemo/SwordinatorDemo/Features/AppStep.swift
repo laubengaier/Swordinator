@@ -15,7 +15,7 @@ enum AppStep: Step {
     case taskDetailReminder(task: Task)
     case taskDetailPriority(task: Task)
     case lazyTaskDetail(id: Int)
-    
+    case taskDetailClose
     // auth
     case authWithSIWA
     case authCompleted
@@ -25,8 +25,14 @@ enum AppStep: Step {
     case sync
     case syncCompleted
     
+    // profile
+    case profile
+    case profileSettings
+    case closeProfileSettings
+    
     // navigation
     case close
+    case closeChildren
     case dismiss
     case pop
 }
@@ -36,6 +42,7 @@ enum AppDeeplinkStep: DeeplinkStep {
     case lazyTaskDetail(id: Int)
     case tasks
     case profile
+    case profileSettings
     case logout
 }
 
@@ -67,6 +74,8 @@ extension AppDeeplinkStep {
             return .profile
         } else if host == "logout" {
             return .logout
+        } else if host == "settings" {
+            return .profileSettings
         }
         return nil
     }

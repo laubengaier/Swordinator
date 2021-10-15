@@ -43,12 +43,16 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
     func handle(step: Step) {
         guard let step = step as? AppStep else { return }
         switch step {
+            
         case .taskDetail(let task, let completion):
             showTaskDetail(task: task, completion: completion)
+        case .taskDetailClose:
+            closeTaskDetail()
+        
         case .logout:
-            parent?.handle(step: step)
-        case .close:
-            childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+            logout()
+        case .closeChildren:
+            closeChildren()
         default:
             ()
         }
@@ -72,7 +76,8 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
 }
 
 // MARK: - Actions
-extension TaskListCoordinator {
+extension TaskListCoordinator
+{
     private func showTaskDetail(task: Task, completion: (() -> Void)?) {
         let nvc = UINavigationController()
         let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task, taskCompletion: completion)
@@ -88,5 +93,24 @@ extension TaskListCoordinator {
             guard let task = task else { return }
             self.showTaskDetail(task: task, completion: nil)
         }
+    }
+    
+    private func closeTaskDetail() {
+        childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+    }
+    
+    private func navigateToProfileSettings() {
+        childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+        parent?.handle(step: AppStep.profileSettings)
+    }
+    
+    private func closeChildren() {
+        if let taskDetailCoordinator = childCoordinators.filter({ $0 is TaskDetailCoordinator }).first {
+            taskDetailCoordinator.handle(step: AppStep.dismiss)
+        }
+    }
+    
+    private func logout() {
+        parent?.handle(step: AppStep.logout)
     }
 }

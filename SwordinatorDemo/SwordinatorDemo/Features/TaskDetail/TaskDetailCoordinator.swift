@@ -56,12 +56,9 @@ class TaskDetailCoordinator: NavigationControllerCoordinator, ParentCoordinated,
         case .taskDetailPriority(let task):
             showPriority(task: task)
         case .close:
-            taskCompletion?()
-            parent?.handle(step: AppStep.close)
+            close()
         case .dismiss:
-            taskCompletion?()
-            navigationController.dismiss(animated: true, completion: nil)
-            parent?.handle(step: AppStep.close)
+            dismiss()
         default:
             ()
         }
@@ -86,5 +83,16 @@ extension TaskDetailCoordinator {
     private func showPriority(task: Task) {
         let vc = TaskDetailReminderViewController()
         navigationController.pushViewController(vc, animated: true)
+    }
+    
+    private func close() {
+        taskCompletion?()
+        parent?.handle(step: AppStep.taskDetailClose)
+    }
+    
+    private func dismiss() {
+        taskCompletion?()
+        navigationController.dismiss(animated: true, completion: nil)
+        parent?.handle(step: AppStep.taskDetailClose)
     }
 }

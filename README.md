@@ -23,7 +23,7 @@ dependencies: [
 These steps should provide a simple way of getting started. If something is not clear please take a look at the demo provided or create an issue.
 
 ##### Quicknote:
-The simplest way is to go forward with implementing `Step` and using `handle(step: Step)` which simplifies the coordination but if you want even more control or don't like steps there is a delegate example in the demo (ProfileCoordinator). 
+The simplest way is to go forward with implementing `Step` and using `handle(step: Step)` which simplifies the coordination but if you want even more control or don't like steps there is a delegate example in the demo (NoStepCoordinator). 
 
 #### 1. Define Steps
 
@@ -186,6 +186,8 @@ xcrun simctl openurl booted swordinator://tasks/1
 xcrun simctl openurl booted swordinator://tasks
 # profile, switch tab
 xcrun simctl openurl booted swordinator://profile
+# profile settings, switch tab to profile and open settings
+xcrun simctl openurl booted swordinator://settings
 # logout
 xcrun simctl openurl booted swordinator://logout
 ```

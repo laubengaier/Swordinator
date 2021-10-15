@@ -10,24 +10,14 @@ import UIKit
 import Swordinator
 import MBProgressHUD
 
-protocol ProfileCoordinatorHandling: AnyObject
-{
-    func handle(event: ProfileCoordinator.Event)
-}
-
 class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deeplinkable
 {
     weak var rootCoordinator: (Coordinator & Deeplinkable)?
-    var parent: ProfileCoordinatorHandling?
+    var parent: Coordinator?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
     let services: AppServices
-    
-    enum Event {
-        case close
-        case logout
-    }
     
     init(navigationController: UINavigationController, services: AppServices) {
         self.navigationController = navigationController
@@ -53,8 +43,20 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
     func handle(step: Step) {
         guard let step = step as? AppStep else { return }
         switch step {
-        case .close:
-            childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+        
+        case .profileSettings:
+            showProfileSettings()
+        case .closeProfileSettings:
+            closeProfileSettings()
+           
+        case .lazyTaskDetail(let id):
+            showTaskDetailLazy(id: id)
+        case .taskDetailClose:
+            closeTaskDetail()
+            
+        case .logout:
+            logout()
+            
         default:
             ()
         }
@@ -71,6 +73,8 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
                 self.showTaskDetail(task: task)
             case .lazyTaskDetail(let id):
                 showTaskDetailLazy(id: id)
+            case .profileSettings:
+                showProfileSettings()
             default:
                 ()
             }
@@ -80,6 +84,8 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
 
 // MARK: - Actions
 extension ProfileCoordinator {
+    
+    // MARK: Task
     private func showTaskDetail(task: Task) {
         let nvc = UINavigationController()
         let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task)
@@ -97,18 +103,32 @@ extension ProfileCoordinator {
         }
     }
     
+    private func closeTaskDetail() {
+        childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+    }
+        
+    // MARK: Profile Settings
+    private func showProfileSettings() {
+        let nvc = UINavigationController()
+        let coordinator = ProfileSettingsCoordinator(navigationController: nvc, services: services)
+        coordinator.parent = self
+        navigationController.present(nvc, animated: true, completion: nil)
+        childCoordinators.append(coordinator)
+    }
+    
+    private func closeProfileSettings() {
+        childCoordinators.removeAll { $0 is ProfileSettingsCoordinator }
+    }
+    
+    // MARK: Others
+    private func logout() {
+        childCoordinators.removeAll { $0 is ProfileSettingsCoordinator }
+        parent?.handle(step: AppStep.logout)
+    }
+    
     private func showAlert(title: String?, message: String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         navigationController.present(alertVC, animated: true, completion: nil)
-    }
-}
-
-extension ProfileCoordinator: ProfileViewControllerHandling {
-    func handle(event: ProfileViewController.Event) {
-        switch event {
-        case .logout:
-            parent?.handle(event: .logout)
-        }
     }
 }
