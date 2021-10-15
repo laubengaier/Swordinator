@@ -56,6 +56,18 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
         rootCoordinator = taskListCoordinator
     }
     
+    func handle(step: Step) {
+        guard let step = step as? AppStep else { return }
+        switch step {
+        case .profileSettings:
+            self.showProfile(shouldSelect: true)
+        case .logout:
+            self.logout()
+        default:
+            ()
+        }
+    }
+    
     func handle(deepLink: DeeplinkStep) {
         if let deepLink = deepLink as? AppDeeplinkStep {
             switch deepLink {
@@ -64,6 +76,12 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
                 return
             case .profile:
                 self.showProfile(shouldSelect: true)
+                return
+            case .profileSettings:
+                if let taskListCoordinator = childCoordinators.filter({ $0 is TaskListCoordinator }).first {
+                    taskListCoordinator.handle(step: AppStep.dismiss)
+                }
+                self.showProfile(shouldSelect: true, forwardStep: deepLink)
                 return
             default:
                 ()
@@ -90,7 +108,7 @@ extension DashboardCoordinator {
         print("🔄 changed rootCoordinator to taskList")
     }
     
-    private func showProfile(shouldSelect: Bool = false) {
+    private func showProfile(shouldSelect: Bool = false, forwardStep: DeeplinkStep? = nil) {
         guard
             let profileCoordinator = childCoordinators.filter({ $0 is ProfileCoordinator }).first as? ProfileCoordinator
         else { return }
@@ -98,6 +116,9 @@ extension DashboardCoordinator {
             tabBarController.selectedIndex = 1
         }
         rootCoordinator = profileCoordinator
+        if let forwardStep = forwardStep {
+            profileCoordinator.handle(deepLink: forwardStep)
+        }
         print("🔄 changed rootCoordinator to profile")
     }
     

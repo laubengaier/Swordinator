@@ -25,6 +25,10 @@ enum AppStep: Step {
     case sync
     case syncCompleted
     
+    // profile
+    case profile
+    case profileSettings
+    
     // navigation
     case close
     case dismiss
@@ -36,6 +40,7 @@ enum AppDeeplinkStep: DeeplinkStep {
     case lazyTaskDetail(id: Int)
     case tasks
     case profile
+    case profileSettings
     case logout
 }
 
@@ -67,6 +72,8 @@ extension AppDeeplinkStep {
             return .profile
         } else if host == "logout" {
             return .logout
+        } else if host == "settings" {
+            return .profileSettings
         }
         return nil
     }

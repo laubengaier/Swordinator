@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController, Coordinated {
     
     enum Event {
         case logout
+        case settings
     }
     
     let viewModel: ProfileViewModel
@@ -45,7 +46,9 @@ class ProfileViewController: UIViewController, Coordinated {
     }
     
     lazy var settingsBarButton: UIBarButtonItem = {
-        let view = UIBarButtonItem(title: nil, image: UIImage(systemName: "gearshape"), primaryAction: nil, menu: settingsMenu)
+        let view = UIBarButtonItem(title: nil, image: UIImage(systemName: "gearshape"), primaryAction: UIAction(handler: { [weak self] _ in
+            self?.coordinator?.handle(event: .settings)
+        }), menu: nil)
         return view
     }()
     

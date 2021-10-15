@@ -49,6 +49,13 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
             parent?.handle(step: step)
         case .close:
             childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+        case .profileSettings:
+            childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+            parent?.handle(step: step)
+        case .dismiss:
+            if let taskDetailCoordinator = childCoordinators.filter({ $0 is TaskDetailCoordinator }).first {
+                taskDetailCoordinator.handle(step: AppStep.dismiss)
+            }
         default:
             ()
         }
@@ -72,7 +79,8 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
 }
 
 // MARK: - Actions
-extension TaskListCoordinator {
+extension TaskListCoordinator
+{
     private func showTaskDetail(task: Task, completion: (() -> Void)?) {
         let nvc = UINavigationController()
         let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task, taskCompletion: completion)

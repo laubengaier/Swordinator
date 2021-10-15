@@ -18,7 +18,7 @@ protocol ProfileCoordinatorHandling: AnyObject
 class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deeplinkable
 {
     weak var rootCoordinator: (Coordinator & Deeplinkable)?
-    var parent: ProfileCoordinatorHandling?
+    var parent: (Coordinator & ProfileCoordinatorHandling)?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
@@ -55,6 +55,11 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
         switch step {
         case .close:
             childCoordinators.removeAll { $0 is TaskDetailCoordinator }
+        case .profileSettings:
+            showProfileSettings()
+        case .logout:
+            childCoordinators.removeAll { $0 is ProfileSettingsCoordinator }
+            parent?.handle(step: step)
         default:
             ()
         }
@@ -71,6 +76,8 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
                 self.showTaskDetail(task: task)
             case .lazyTaskDetail(let id):
                 showTaskDetailLazy(id: id)
+            case .profileSettings:
+                showProfileSettings()
             default:
                 ()
             }
@@ -102,6 +109,14 @@ extension ProfileCoordinator {
         alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         navigationController.present(alertVC, animated: true, completion: nil)
     }
+    
+    private func showProfileSettings() {
+        let nvc = UINavigationController()
+        let coordinator = ProfileSettingsCoordinator(navigationController: nvc, services: services)
+        coordinator.parent = self
+        navigationController.present(nvc, animated: true, completion: nil)
+        childCoordinators.append(coordinator)
+    }
 }
 
 extension ProfileCoordinator: ProfileViewControllerHandling {
@@ -109,6 +124,8 @@ extension ProfileCoordinator: ProfileViewControllerHandling {
         switch event {
         case .logout:
             parent?.handle(event: .logout)
+        case .settings:
+            handle(step: AppStep.profileSettings)
         }
     }
 }

@@ -38,6 +38,10 @@
 		F74BDC0A2710B26600B3F68A /* TaskListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74BDC092710B26600B3F68A /* TaskListCell.swift */; };
 		F7D3056C2716A298008B2552 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3056B2716A298008B2552 /* SyncCoordinator.swift */; };
 		F7D3056E2716A39F008B2552 /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3056D2716A39F008B2552 /* SyncViewController.swift */; };
+		F7D3057427194B06008B2552 /* ProfileSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057327194B06008B2552 /* ProfileSettingsCoordinator.swift */; };
+		F7D3057627194B0D008B2552 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057527194B0D008B2552 /* ProfileSettingsViewModel.swift */; };
+		F7D3057827194B14008B2552 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057727194B14008B2552 /* ProfileSettingsViewController.swift */; };
+		F7D3057B27195F71008B2552 /* ProfileSettingsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057A27195F71008B2552 /* ProfileSettingsListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +76,10 @@
 		F74BDC092710B26600B3F68A /* TaskListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCell.swift; sourceTree = "<group>"; };
 		F7D3056B2716A298008B2552 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 		F7D3056D2716A39F008B2552 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
+		F7D3057327194B06008B2552 /* ProfileSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsCoordinator.swift; sourceTree = "<group>"; };
+		F7D3057527194B0D008B2552 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
+		F7D3057727194B14008B2552 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
+		F7D3057A27195F71008B2552 /* ProfileSettingsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +149,7 @@
 				A186D21127104B3C0047BA45 /* TaskList */,
 				A186D20B27104B3C0047BA45 /* TaskDetail */,
 				A186D21427104B3C0047BA45 /* Profile */,
+				F7D3057227194AEC008B2552 /* Profile Settings */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -253,6 +262,25 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
+		F7D3057227194AEC008B2552 /* Profile Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F7D3057327194B06008B2552 /* ProfileSettingsCoordinator.swift */,
+				F7D3057527194B0D008B2552 /* ProfileSettingsViewModel.swift */,
+				F7D3057727194B14008B2552 /* ProfileSettingsViewController.swift */,
+				F7D3057927195F66008B2552 /* Cells */,
+			);
+			path = "Profile Settings";
+			sourceTree = "<group>";
+		};
+		F7D3057927195F66008B2552 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F7D3057A27195F71008B2552 /* ProfileSettingsListCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -335,6 +363,8 @@
 			files = (
 				A186D22527104B3C0047BA45 /* ProfileCoordinator.swift in Sources */,
 				A186D21E27104B3C0047BA45 /* AppCoordinator.swift in Sources */,
+				F7D3057427194B06008B2552 /* ProfileSettingsCoordinator.swift in Sources */,
+				F7D3057827194B14008B2552 /* ProfileSettingsViewController.swift in Sources */,
 				F738C5C72714126900EA5812 /* LoginViewModel.swift in Sources */,
 				F738C5BF2713FB1500EA5812 /* TaskDetailSelectableCell.swift in Sources */,
 				A186D22227104B3C0047BA45 /* DashboardCoordinator.swift in Sources */,
@@ -345,12 +375,14 @@
 				F7D3056E2716A39F008B2552 /* SyncViewController.swift in Sources */,
 				F7D3056C2716A298008B2552 /* SyncCoordinator.swift in Sources */,
 				F738C5C2271400E900EA5812 /* TaskDetailReminderViewController.swift in Sources */,
+				F7D3057B27195F71008B2552 /* ProfileSettingsListCell.swift in Sources */,
 				F738C5C92715551E00EA5812 /* TaskListViewModel.swift in Sources */,
 				F738C5C5271411A100EA5812 /* AppServices.swift in Sources */,
 				A186D22627104B3C0047BA45 /* ProfileViewController.swift in Sources */,
 				A186D22327104B3C0047BA45 /* TaskListCoordinator.swift in Sources */,
 				A186D1EE27104AF90047BA45 /* AppDelegate.swift in Sources */,
 				A186D1F027104AF90047BA45 /* SceneDelegate.swift in Sources */,
+				F7D3057627194B0D008B2552 /* ProfileSettingsViewModel.swift in Sources */,
 				F74BDC0A2710B26600B3F68A /* TaskListCell.swift in Sources */,
 				A186D22727104B3C0047BA45 /* ProfileViewModel.swift in Sources */,
 				A186D22A27104B3C0047BA45 /* LoginViewController.swift in Sources */,
