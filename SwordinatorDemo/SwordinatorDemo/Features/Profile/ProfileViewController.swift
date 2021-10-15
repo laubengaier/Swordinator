@@ -9,19 +9,10 @@ import Foundation
 import UIKit
 import Swordinator
 
-protocol ProfileViewControllerHandling: AnyObject {
-    func handle(event: ProfileViewController.Event)
-}
-
 class ProfileViewController: UIViewController, Coordinated {
     
-    enum Event {
-        case logout
-        case settings
-    }
-    
     let viewModel: ProfileViewModel
-    weak var coordinator: ProfileViewControllerHandling?
+    weak var coordinator: Coordinator?
     
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
@@ -36,7 +27,7 @@ class ProfileViewController: UIViewController, Coordinated {
         return [
             UIAction(
                 title: "Logout", attributes: .destructive, handler: { [weak self] (_) in
-                self?.coordinator?.handle(event: .logout)
+                self?.coordinator?.handle(step: AppStep.logout)
             }),
         ]
     }
@@ -47,7 +38,7 @@ class ProfileViewController: UIViewController, Coordinated {
     
     lazy var settingsBarButton: UIBarButtonItem = {
         let view = UIBarButtonItem(title: nil, image: UIImage(systemName: "gearshape"), primaryAction: UIAction(handler: { [weak self] _ in
-            self?.coordinator?.handle(event: .settings)
+            self?.coordinator?.handle(step: AppStep.profileSettings)
         }), menu: nil)
         return view
     }()

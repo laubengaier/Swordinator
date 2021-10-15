@@ -21,47 +21,6 @@ class ProfileSettingsViewController: UIViewController, Coordinated {
     
     required init?(coder: NSCoder) { return nil }
     
-    var sections: [TableSection] = [
-        TableSection(name: nil, items: [
-            .feedback,
-            .version,
-            .logout
-        ])
-    ]
-    
-    struct TableSection {
-        let name: String?
-        let items: [TableSectionRow]
-    }
-    
-    enum TableSectionRow {
-        case feedback
-        case version
-        case logout
-        
-        var iconName: String {
-            switch self {
-            case .feedback:
-                return "person"
-            case .version:
-                return "info"
-            case .logout:
-                return "lock"
-            }
-        }
-        
-        var title: String {
-            switch self {
-            case .feedback:
-                return "Feedback"
-            case .version:
-                return "Version"
-            case .logout:
-                return "Logout"
-            }
-        }
-    }
-    
     lazy var tableView: UITableView = {
         let view = UITableView()
         view.register(ProfileSettingsListCell.self, forCellReuseIdentifier: ProfileSettingsListCell.identifier)
@@ -75,27 +34,37 @@ class ProfileSettingsViewController: UIViewController, Coordinated {
         
         title = "Settings"
         view.backgroundColor = .systemBackground
+        navigationController?.presentationController?.delegate = self
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
     }
-    
 }
 
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension ProfileSettingsViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        coordinator?.handle(step: AppStep.close)
+    }
+}
+
+
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension ProfileSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return viewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+        return viewModel.sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = sections[indexPath.section].items[indexPath.row]
+        let item = viewModel.sections[indexPath.section].items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileSettingsListCell.identifier, for: indexPath) as! ProfileSettingsListCell
         cell.setup(
             iconName: item.iconName,
@@ -107,7 +76,7 @@ extension ProfileSettingsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = sections[indexPath.section].items[indexPath.row]
+        let item = viewModel.sections[indexPath.section].items[indexPath.row]
         switch item {
         case .logout:
             coordinator?.handle(step: AppStep.logout)

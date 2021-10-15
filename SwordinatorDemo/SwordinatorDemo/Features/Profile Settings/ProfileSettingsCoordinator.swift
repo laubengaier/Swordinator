@@ -47,7 +47,11 @@ class ProfileSettingsCoordinator: NavigationControllerCoordinator, ParentCoordin
         guard let step = step as? AppStep else { return }
         switch step {
         case .logout:
-            parent?.handle(step: step)
+            logout()
+        case .dismiss:
+            dismiss()
+        case .close:
+            close()
         default:
             ()
         }
@@ -64,5 +68,16 @@ class ProfileSettingsCoordinator: NavigationControllerCoordinator, ParentCoordin
 
 // MARK: - Actions
 extension ProfileSettingsCoordinator {
+    private func logout() {
+        parent?.handle(step: AppStep.logout)
+    }
     
+    private func dismiss() {
+        parent?.handle(step: AppStep.closeProfileSettings)
+        navigationController.dismiss(animated: true, completion: nil)
+    }
+    
+    private func close() {
+        parent?.handle(step: AppStep.closeProfileSettings)
+    }
 }

@@ -78,10 +78,7 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
                 self.showProfile(shouldSelect: true)
                 return
             case .profileSettings:
-                if let taskListCoordinator = childCoordinators.filter({ $0 is TaskListCoordinator }).first {
-                    taskListCoordinator.handle(step: AppStep.dismiss)
-                }
-                self.showProfile(shouldSelect: true, forwardStep: deepLink)
+                self.showProfileSettings()
                 return
             default:
                 ()
@@ -122,6 +119,13 @@ extension DashboardCoordinator {
         print("🔄 changed rootCoordinator to profile")
     }
     
+    private func showProfileSettings() {
+        if let taskListCoordinator = childCoordinators.filter({ $0 is TaskListCoordinator }).first {
+            taskListCoordinator.handle(step: AppStep.closeChildren)
+        }
+        self.showProfile(shouldSelect: true, forwardStep: AppDeeplinkStep.profileSettings)
+    }
+    
     private func logout() {
         childCoordinators.removeAll { $0 is TaskListCoordinator }
         childCoordinators.removeAll { $0 is ProfileCoordinator }
@@ -140,19 +144,6 @@ extension DashboardCoordinator: UITabBarControllerDelegate {
             self.showProfile()
         default:
             ()
-        }
-    }
-}
-
-// MARK: - ProfileCoordinatorHandling
-extension DashboardCoordinator: ProfileCoordinatorHandling {
-    func handle(event: ProfileCoordinator.Event) {
-        switch event {
-        case .logout:
-            logout()
-        case .close:
-            childCoordinators.removeAll { $0 is TaskListCoordinator }
-            childCoordinators.removeAll { $0 is ProfileCoordinator }
         }
     }
 }

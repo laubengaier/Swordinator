@@ -42,6 +42,8 @@
 		F7D3057627194B0D008B2552 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057527194B0D008B2552 /* ProfileSettingsViewModel.swift */; };
 		F7D3057827194B14008B2552 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057727194B14008B2552 /* ProfileSettingsViewController.swift */; };
 		F7D3057B27195F71008B2552 /* ProfileSettingsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057A27195F71008B2552 /* ProfileSettingsListCell.swift */; };
+		F7D3057E271968D5008B2552 /* NoStepCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057D271968D5008B2552 /* NoStepCoordinator.swift */; };
+		F7D305802719691C008B2552 /* NoStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3057F2719691C008B2552 /* NoStepViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,8 @@
 		F7D3057527194B0D008B2552 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
 		F7D3057727194B14008B2552 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
 		F7D3057A27195F71008B2552 /* ProfileSettingsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsListCell.swift; sourceTree = "<group>"; };
+		F7D3057D271968D5008B2552 /* NoStepCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoStepCoordinator.swift; sourceTree = "<group>"; };
+		F7D3057F2719691C008B2552 /* NoStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoStepViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,7 @@
 				A186D20B27104B3C0047BA45 /* TaskDetail */,
 				A186D21427104B3C0047BA45 /* Profile */,
 				F7D3057227194AEC008B2552 /* Profile Settings */,
+				F7D3057C271968AC008B2552 /* No Step */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -281,6 +286,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		F7D3057C271968AC008B2552 /* No Step */ = {
+			isa = PBXGroup;
+			children = (
+				F7D3057D271968D5008B2552 /* NoStepCoordinator.swift */,
+				F7D3057F2719691C008B2552 /* NoStepViewController.swift */,
+			);
+			path = "No Step";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -368,6 +382,7 @@
 				F738C5C72714126900EA5812 /* LoginViewModel.swift in Sources */,
 				F738C5BF2713FB1500EA5812 /* TaskDetailSelectableCell.swift in Sources */,
 				A186D22227104B3C0047BA45 /* DashboardCoordinator.swift in Sources */,
+				F7D305802719691C008B2552 /* NoStepViewController.swift in Sources */,
 				A186D22127104B3C0047BA45 /* TaskDetailCoordinator.swift in Sources */,
 				F738C5BD2713F89E00EA5812 /* TaskDetailNameCell.swift in Sources */,
 				A186D22827104B3C0047BA45 /* AppStep.swift in Sources */,
@@ -378,6 +393,7 @@
 				F7D3057B27195F71008B2552 /* ProfileSettingsListCell.swift in Sources */,
 				F738C5C92715551E00EA5812 /* TaskListViewModel.swift in Sources */,
 				F738C5C5271411A100EA5812 /* AppServices.swift in Sources */,
+				F7D3057E271968D5008B2552 /* NoStepCoordinator.swift in Sources */,
 				A186D22627104B3C0047BA45 /* ProfileViewController.swift in Sources */,
 				A186D22327104B3C0047BA45 /* TaskListCoordinator.swift in Sources */,
 				A186D1EE27104AF90047BA45 /* AppDelegate.swift in Sources */,
