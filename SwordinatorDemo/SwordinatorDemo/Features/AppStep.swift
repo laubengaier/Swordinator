@@ -7,15 +7,18 @@
 
 import Foundation
 import Swordinator
+import UIKit
+import MBProgressHUD
 
 enum AppStep: Step {
     
     // task
     case taskDetail(task: Task, completion: (() -> Void)?)
+    case taskDetailLazy(id: Int)
     case taskDetailReminder(task: Task)
     case taskDetailPriority(task: Task)
-    case lazyTaskDetail(id: Int)
-    case taskDetailClose
+    case taskDetailCompleted
+    
     // auth
     case authWithSIWA
     case authCompleted
@@ -38,12 +41,19 @@ enum AppStep: Step {
 }
 
 enum AppDeeplinkStep: DeeplinkStep {
+    
+    // task
     case taskDetail(task: Task)
-    case lazyTaskDetail(id: Int)
+    case taskDetailLazy(id: Int)
+    
+    // tabbar
     case tasks
     case profile
+    
+    // profile
     case profileSettings
     case logout
+    
 }
 
 extension AppDeeplinkStep {
@@ -67,7 +77,7 @@ extension AppDeeplinkStep {
         if url.absoluteString.starts(with: "swordinator://newTask") {
             return .taskDetail(task: Task(id: 10, name: "Test1"))
         } else if host == "tasks", let path = Int(url.pathComponents[1]) {
-            return .lazyTaskDetail(id: path)
+            return .taskDetailLazy(id: path)
         } else if host == "tasks" {
             return .tasks
         } else if host == "profile" {
@@ -79,4 +89,40 @@ extension AppDeeplinkStep {
         }
         return nil
     }
+}
+
+
+
+protocol NavCoordinator: NavigationControllerCoordinator, ParentCoordinated, HasServices where Parent == Coordinator {}
+
+extension NavCoordinator {
+    
+    func navigateToTask(id: Int) {
+        MBProgressHUD.showAdded(to: navigationController.view, animated: true)
+        services.lazyTask(id: id) { task in
+            MBProgressHUD.hide(for: self.navigationController.view, animated: true)
+            guard let task = task else { return }
+            self.navigateToTask(task: task)
+        }
+    }
+    
+    func navigateToTask(task: Task) {
+        let nvc = UINavigationController()
+        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task)
+        coordinator.parent = self
+        navigationController.present(nvc, animated: true, completion: nil)
+        childCoordinators.append(coordinator)
+    }
+    
+    func endNavigateToTask(animated: Bool, shouldDismiss: Bool = false, completion: (() -> Void)? = nil) {
+        parent?.handle(step: AppStep.taskDetailCompleted)
+        if shouldDismiss {
+            navigationController.dismiss(animated: animated, completion: completion)
+        }
+    }
+    
+    func releaseTaskDetail() {
+        releaseChild(type: TaskDetailCoordinator.self)
+    }
+
 }

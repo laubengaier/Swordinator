@@ -10,16 +10,16 @@ import UIKit
 import Swordinator
 import MBProgressHUD
 
-class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deeplinkable
+class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deeplinkable, HasServices
 {
     weak var rootCoordinator: (Coordinator & Deeplinkable)?
     var parent: Coordinator?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
-    let services: AppServices
+    let services: Services
 
-    init(navigationController: UINavigationController, services: AppServices) {
+    init(navigationController: UINavigationController, services: Services) {
         self.navigationController = navigationController
         self.services = services
         start()
@@ -46,7 +46,7 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
             
         case .taskDetail(let task, let completion):
             showTaskDetail(task: task, completion: completion)
-        case .taskDetailClose:
+        case .taskDetailCompleted:
             closeTaskDetail()
         
         case .logout:
@@ -66,7 +66,7 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
             switch deepLink {
             case .taskDetail(let task):
                 self.showTaskDetail(task: task, completion: nil)
-            case .lazyTaskDetail(let id):
+            case .taskDetailLazy(let id):
                 showTaskDetailLazy(id: id)
             default:
                 ()

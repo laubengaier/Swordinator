@@ -5,18 +5,34 @@ public protocol Coordinator: AnyObject
     var childCoordinators: [Coordinator] { get set }
     func start()
     func handle(step: Step)
+    func releaseChild<T: Coordinator>(type: T.Type)
 }
 
 public extension Coordinator {
     func handle(step: Step) {
         print("⚠️ step handler is not implemented for \(String(describing: Self.self))")
     }
+    func releaseChild<T: Coordinator>(type: T.Type) {
+        childCoordinators.removeAll { $0 is T }
+    }
 }
 
-public protocol ParentCoordinated: AnyObject
+public protocol AnyParentCoordinated: AnyObject
 {
     associatedtype Parent
     var parent: Parent? { get set }
+}
+
+public protocol ParentCoordinated: AnyParentCoordinated
+{
+    var parent: Coordinator? { get set }
+    func releaseFromParent()
+}
+
+public extension ParentCoordinated {
+    func releaseFromParent() {
+        parent?.childCoordinators.removeAll { $0 is Self }
+    }
 }
 
 public protocol Coordinated: AnyObject

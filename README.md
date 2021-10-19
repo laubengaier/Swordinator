@@ -3,8 +3,7 @@
 
 Swordinator is a minimal, lightweight and easy customizable navigation framework for iOS applications.
 
-[![Tests](https://github.com/laubengaier/Swordinator/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/laubengaier/Swordinator/actions/workflows/ci.yml)
-
+[![Tests](https://github.com/laubengaier/Swordinator/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/laubengaier/Swordinator/actions/workflows/ci.yml) ![SPM Compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen)
 ## Requirements
 iOS 14.0+, Swift 5.0+
 

@@ -65,7 +65,11 @@ class TaskListCell: UITableViewCell {
     private func updateView(task: Task) {
         self.completedButton.isSelected = task.completed
         if task.completed {
-            self.titleLabel.attributedText = try? NSAttributedString(markdown: "~" + task.name + "~")
+            if #available(iOS 15, *) {
+                self.titleLabel.attributedText = try? NSAttributedString(markdown: "~" + task.name + "~")
+            } else {
+                self.titleLabel.attributedText = NSAttributedString(string: task.name, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single])
+            }
         } else {
             self.titleLabel.attributedText = NSAttributedString(string: task.name)
         }

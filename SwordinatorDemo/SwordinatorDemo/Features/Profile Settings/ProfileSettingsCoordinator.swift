@@ -16,13 +16,13 @@ class ProfileSettingsCoordinator: NavigationControllerCoordinator, ParentCoordin
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
-    let services: AppServices
+    let services: Services
     
     enum Event {
         case close
     }
     
-    init(navigationController: UINavigationController, services: AppServices) {
+    init(navigationController: UINavigationController, services: Services) {
         self.navigationController = navigationController
         self.services = services
         start()

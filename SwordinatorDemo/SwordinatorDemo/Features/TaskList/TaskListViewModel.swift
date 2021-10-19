@@ -9,11 +9,11 @@ import Foundation
 
 class TaskListViewModel {
     
-    let services: AppServices
+    let services: Services
     
     var tasks: [Task]
     
-    init(services: AppServices) {
+    init(services: Services) {
         self.services = services
         self.tasks = services.tasks
     }
