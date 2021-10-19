@@ -46,7 +46,7 @@ class ProfileCoordinator: NavCoordinator, Deeplinkable
         
         case .profileSettings:
             showProfileSettings()
-        case .closeProfileSettings:
+        case .profileSettingsCompleted:
             closeProfileSettings()
            
         case .taskDetailLazy(let id):

@@ -28,6 +28,8 @@
 		A186D22A27104B3C0047BA45 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186D21B27104B3C0047BA45 /* LoginViewController.swift */; };
 		A186D22B27104B3C0047BA45 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = A186D21D27104B3C0047BA45 /* Task.swift */; };
 		A186D22E27104BF40047BA45 /* Swordinator in Frameworks */ = {isa = PBXBuildFile; productRef = A186D22D27104BF40047BA45 /* Swordinator */; };
+		F718EFD4271E773C009D2E33 /* NavCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718EFD3271E773C009D2E33 /* NavCoordinator.swift */; };
+		F718EFD6271E7774009D2E33 /* AppDeeplinkStep+Convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718EFD5271E7774009D2E33 /* AppDeeplinkStep+Convert.swift */; };
 		F738C5BD2713F89E00EA5812 /* TaskDetailNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F738C5BC2713F89E00EA5812 /* TaskDetailNameCell.swift */; };
 		F738C5BF2713FB1500EA5812 /* TaskDetailSelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F738C5BE2713FB1500EA5812 /* TaskDetailSelectableCell.swift */; };
 		F738C5C2271400E900EA5812 /* TaskDetailReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F738C5C1271400E900EA5812 /* TaskDetailReminderViewController.swift */; };
@@ -68,6 +70,8 @@
 		A186D21A27104B3C0047BA45 /* LoginCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		A186D21B27104B3C0047BA45 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A186D21D27104B3C0047BA45 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		F718EFD3271E773C009D2E33 /* NavCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavCoordinator.swift; sourceTree = "<group>"; };
+		F718EFD5271E7774009D2E33 /* AppDeeplinkStep+Convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDeeplinkStep+Convert.swift"; sourceTree = "<group>"; };
 		F738C5BC2713F89E00EA5812 /* TaskDetailNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailNameCell.swift; sourceTree = "<group>"; };
 		F738C5BE2713FB1500EA5812 /* TaskDetailSelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailSelectableCell.swift; sourceTree = "<group>"; };
 		F738C5C1271400E900EA5812 /* TaskDetailReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailReminderViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 			children = (
 				A186D21827104B3C0047BA45 /* AppStep.swift */,
 				A186D20A27104B3C0047BA45 /* AppCoordinator.swift */,
+				F718EFD2271E772E009D2E33 /* Helper */,
 				A186D21927104B3C0047BA45 /* Login */,
 				F7D3056A2716A267008B2552 /* Sync */,
 				A186D20F27104B3C0047BA45 /* Dashboard */,
@@ -223,6 +228,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F718EFD2271E772E009D2E33 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				F718EFD3271E773C009D2E33 /* NavCoordinator.swift */,
+				F718EFD5271E7774009D2E33 /* AppDeeplinkStep+Convert.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		F738C5BB2713F87A00EA5812 /* Cells */ = {
@@ -399,6 +413,8 @@
 				A186D1EE27104AF90047BA45 /* AppDelegate.swift in Sources */,
 				A186D1F027104AF90047BA45 /* SceneDelegate.swift in Sources */,
 				F7D3057627194B0D008B2552 /* ProfileSettingsViewModel.swift in Sources */,
+				F718EFD4271E773C009D2E33 /* NavCoordinator.swift in Sources */,
+				F718EFD6271E7774009D2E33 /* AppDeeplinkStep+Convert.swift in Sources */,
 				F74BDC0A2710B26600B3F68A /* TaskListCell.swift in Sources */,
 				A186D22727104B3C0047BA45 /* ProfileViewModel.swift in Sources */,
 				A186D22A27104B3C0047BA45 /* LoginViewController.swift in Sources */,

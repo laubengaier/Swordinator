@@ -73,11 +73,11 @@ extension ProfileSettingsCoordinator {
     }
     
     private func dismiss() {
-        parent?.handle(step: AppStep.closeProfileSettings)
+        parent?.handle(step: AppStep.profileSettingsCompleted)
         navigationController.dismiss(animated: true, completion: nil)
     }
     
     private func close() {
-        parent?.handle(step: AppStep.closeProfileSettings)
+        parent?.handle(step: AppStep.profileSettingsCompleted)
     }
 }
