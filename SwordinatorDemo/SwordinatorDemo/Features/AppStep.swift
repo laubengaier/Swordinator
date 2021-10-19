@@ -7,15 +7,18 @@
 
 import Foundation
 import Swordinator
+import UIKit
+import MBProgressHUD
 
 enum AppStep: Step {
     
     // task
     case taskDetail(task: Task, completion: (() -> Void)?)
+    case taskDetailLazy(id: Int)
     case taskDetailReminder(task: Task)
     case taskDetailPriority(task: Task)
-    case lazyTaskDetail(id: Int)
-    case taskDetailClose
+    case taskDetailCompleted
+    
     // auth
     case authWithSIWA
     case authCompleted
@@ -28,7 +31,7 @@ enum AppStep: Step {
     // profile
     case profile
     case profileSettings
-    case closeProfileSettings
+    case profileSettingsCompleted
     
     // navigation
     case close
@@ -38,45 +41,17 @@ enum AppStep: Step {
 }
 
 enum AppDeeplinkStep: DeeplinkStep {
+    
+    // task
     case taskDetail(task: Task)
-    case lazyTaskDetail(id: Int)
+    case taskDetailLazy(id: Int)
+    
+    // tabbar
     case tasks
     case profile
+    
+    // profile
     case profileSettings
     case logout
-}
-
-extension AppDeeplinkStep {
-    static func convert(url: URL) -> AppDeeplinkStep? {
-        guard
-            let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true)
-        else {
-            return nil
-        }
-        
-        guard
-            let host = components.host,
-            let path = components.path
-            //let params = components.queryItems
-        else {
-            return nil
-        }
-        print("host = \(host)")
-        print("path = \(path)")
-        
-        if url.absoluteString.starts(with: "swordinator://newTask") {
-            return .taskDetail(task: Task(id: 10, name: "Test1"))
-        } else if host == "tasks", let path = Int(url.pathComponents[1]) {
-            return .lazyTaskDetail(id: path)
-        } else if host == "tasks" {
-            return .tasks
-        } else if host == "profile" {
-            return .profile
-        } else if host == "logout" {
-            return .logout
-        } else if host == "settings" {
-            return .profileSettings
-        }
-        return nil
-    }
+    
 }

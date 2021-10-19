@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 import Swordinator
 
-class TaskDetailCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deeplinkable
+class TaskDetailCoordinator: NavCoordinator, Deeplinkable
 {
     weak var rootCoordinator: (Coordinator & Deeplinkable)?
     var parent: Coordinator?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
-    let services: AppServices
+    let services: Services
     var task: Task
     var taskCompletion: (() -> Void)?
     
@@ -24,7 +24,7 @@ class TaskDetailCoordinator: NavigationControllerCoordinator, ParentCoordinated,
         case close
     }
     
-    init(navigationController: UINavigationController, services: AppServices, task: Task, taskCompletion: (() -> Void)? = nil) {
+    init(navigationController: UINavigationController, services: Services, task: Task, taskCompletion: (() -> Void)? = nil) {
         self.navigationController = navigationController
         self.services = services
         self.task = task
@@ -87,12 +87,11 @@ extension TaskDetailCoordinator {
     
     private func close() {
         taskCompletion?()
-        parent?.handle(step: AppStep.taskDetailClose)
+        endNavigateToTask(animated: false, shouldDismiss: false, completion: nil)
     }
     
     private func dismiss() {
         taskCompletion?()
-        navigationController.dismiss(animated: true, completion: nil)
-        parent?.handle(step: AppStep.taskDetailClose)
+        endNavigateToTask(animated: true, shouldDismiss: true, completion: nil)
     }
 }

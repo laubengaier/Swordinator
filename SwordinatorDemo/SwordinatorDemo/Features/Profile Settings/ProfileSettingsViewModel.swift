@@ -9,7 +9,7 @@ import Foundation
 
 class ProfileSettingsViewModel {
     
-    let services: AppServices
+    let services: Services
     
     var sections: [TableSection] = [
         TableSection(name: nil, items: [
@@ -19,7 +19,7 @@ class ProfileSettingsViewModel {
         ])
     ]
     
-    init(services: AppServices) {
+    init(services: Services) {
         self.services = services
     }
 }

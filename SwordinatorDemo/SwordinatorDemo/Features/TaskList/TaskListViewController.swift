@@ -63,17 +63,30 @@ class TaskListViewController: UIViewController, Coordinated {
     }()
     
     lazy var newTaskButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "plus")
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-        let view = UIButton(configuration: config, primaryAction: UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.showAddTaskView()
-        }))
-        view.layer.cornerRadius = 25
-        view.backgroundColor = .systemBlue
-        view.tintColor = .white
-        return view
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.image = UIImage(systemName: "plus")
+            config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            let view = UIButton(configuration: config, primaryAction: UIAction(handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.showAddTaskView()
+            }))
+            view.layer.cornerRadius = 25
+            view.backgroundColor = .systemBlue
+            view.tintColor = .white
+            return view
+        } else {
+            let view = UIButton(type: .system, primaryAction: UIAction(handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.showAddTaskView()
+            }))
+            view.setImage(UIImage(systemName: "plus"), for: .normal)
+            view.layer.cornerRadius = 25
+            view.backgroundColor = .systemBlue
+            view.tintColor = .white
+            view.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            return view
+        }
     }()
     
     deinit {

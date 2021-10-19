@@ -14,7 +14,7 @@ protocol NoStepCoordinatorHandling: AnyObject {
 }
 
 
-class NoStepCoordinator: NavigationControllerCoordinator, ParentCoordinated
+class NoStepCoordinator: NavigationControllerCoordinator, AnyParentCoordinated
 {
     enum Event {
         case something

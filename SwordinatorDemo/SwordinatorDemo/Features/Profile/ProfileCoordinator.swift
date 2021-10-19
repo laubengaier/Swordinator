@@ -10,16 +10,16 @@ import UIKit
 import Swordinator
 import MBProgressHUD
 
-class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deeplinkable
+class ProfileCoordinator: NavCoordinator, Deeplinkable
 {
     weak var rootCoordinator: (Coordinator & Deeplinkable)?
     var parent: Coordinator?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     
-    let services: AppServices
+    let services: Services
     
-    init(navigationController: UINavigationController, services: AppServices) {
+    init(navigationController: UINavigationController, services: Services) {
         self.navigationController = navigationController
         self.services = services
         start()
@@ -46,13 +46,13 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
         
         case .profileSettings:
             showProfileSettings()
-        case .closeProfileSettings:
+        case .profileSettingsCompleted:
             closeProfileSettings()
            
-        case .lazyTaskDetail(let id):
-            showTaskDetailLazy(id: id)
-        case .taskDetailClose:
-            closeTaskDetail()
+        case .taskDetailLazy(let id):
+            navigateToTask(id: id)
+        case .taskDetailCompleted:
+            releaseTaskDetail()
             
         case .logout:
             logout()
@@ -70,9 +70,9 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
             switch deepLink
             {
             case .taskDetail(let task):
-                self.showTaskDetail(task: task)
-            case .lazyTaskDetail(let id):
-                showTaskDetailLazy(id: id)
+                navigateToTask(task: task)
+            case .taskDetailLazy(let id):
+                navigateToTask(id: id)
             case .profileSettings:
                 showProfileSettings()
             default:
@@ -85,28 +85,6 @@ class ProfileCoordinator: NavigationControllerCoordinator, ParentCoordinated, De
 // MARK: - Actions
 extension ProfileCoordinator {
     
-    // MARK: Task
-    private func showTaskDetail(task: Task) {
-        let nvc = UINavigationController()
-        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task)
-        coordinator.parent = self
-        navigationController.present(nvc, animated: true, completion: nil)
-        childCoordinators.append(coordinator)
-    }
-    
-    private func showTaskDetailLazy(id: Int) {
-        MBProgressHUD.showAdded(to: navigationController.view, animated: true)
-        services.lazyTask(id: id) { task in
-            MBProgressHUD.hide(for: self.navigationController.view, animated: true)
-            guard let task = task else { return }
-            self.showTaskDetail(task: task)
-        }
-    }
-    
-    private func closeTaskDetail() {
-        childCoordinators.removeAll { $0 is TaskDetailCoordinator }
-    }
-        
     // MARK: Profile Settings
     private func showProfileSettings() {
         let nvc = UINavigationController()

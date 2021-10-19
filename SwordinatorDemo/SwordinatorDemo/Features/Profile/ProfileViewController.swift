@@ -44,12 +44,20 @@ class ProfileViewController: UIViewController, Coordinated {
     }()
     
     lazy var profilePictureButton: UIButton = {
-        let config = UIButton.Configuration.plain()
-        let view = UIButton(configuration: config, primaryAction: nil)
-        view.isUserInteractionEnabled = false
-        view.backgroundColor = .systemGray3
-        view.layer.cornerRadius = 40
-        return view
+        if #available(iOS 15.0, *) {
+            let config = UIButton.Configuration.plain()
+            let view = UIButton(configuration: config, primaryAction: nil)
+            view.isUserInteractionEnabled = false
+            view.backgroundColor = .systemGray3
+            view.layer.cornerRadius = 40
+            return view
+        } else {
+            let view = UIButton(type: .custom, primaryAction: nil)
+            view.isUserInteractionEnabled = false
+            view.backgroundColor = .systemGray3
+            view.layer.cornerRadius = 40
+            return view
+        }
     }()
     
     lazy var userNameLabel: UILabel = {

@@ -9,9 +9,9 @@ import Foundation
 
 class ProfileViewModel {
     
-    let services: AppServices
+    let services: Services
     
-    init(services: AppServices) {
+    init(services: Services) {
         self.services = services
     }
 }

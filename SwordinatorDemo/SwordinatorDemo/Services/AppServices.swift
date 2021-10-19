@@ -7,7 +7,22 @@
 
 import Foundation
 
-class AppServices {
+protocol Services: AnyObject {
+    
+    var isAuthenticated: Bool {get}
+    func userDidLogin()
+    func userDidLogout()
+    
+    var isSyncRequired: Bool {get}
+    var tasks: [Task] {get set}
+    func lazyTask(id: Int, completion: @escaping ((Task?) -> Void))
+}
+
+protocol HasServices: AnyObject {
+    var services: Services {get}
+}
+
+class AppServices: Services {
     
     // Auth
     var isAuthenticated: Bool {
