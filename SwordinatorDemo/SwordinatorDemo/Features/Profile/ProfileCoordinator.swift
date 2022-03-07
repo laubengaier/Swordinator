@@ -19,31 +19,27 @@ class ProfileCoordinator: NavCoordinator, Deeplinkable
     
     let services: Services
     
-    init(navigationController: UINavigationController, services: Services) {
+    init(navigationController: UINavigationController, services: Services, step: AppStep) {
         self.navigationController = navigationController
         self.services = services
-        start()
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        print("➡️ navigated to \(String(describing: Self.self))")
-        
-        let vm = ProfileViewModel(services: services)
-        let vc = ProfileViewController(viewModel: vm)
-        vc.coordinator = self
-        navigationController.setViewControllers([
-            vc
-        ], animated: false)
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         guard let step = step as? AppStep else { return }
         switch step {
-        
+        case .profile:
+            navigateToProfile()
         case .profileSettings:
             showProfileSettings()
         case .profileSettingsCompleted:
@@ -85,10 +81,19 @@ class ProfileCoordinator: NavCoordinator, Deeplinkable
 // MARK: - Actions
 extension ProfileCoordinator {
     
+    private func navigateToProfile() {
+        let vm = ProfileViewModel(services: services)
+        let vc = ProfileViewController(viewModel: vm)
+        vc.coordinator = self
+        navigationController.setViewControllers([
+            vc
+        ], animated: false)
+    }
+    
     // MARK: Profile Settings
     private func showProfileSettings() {
         let nvc = UINavigationController()
-        let coordinator = ProfileSettingsCoordinator(navigationController: nvc, services: services)
+        let coordinator = ProfileSettingsCoordinator(navigationController: nvc, services: services, step: .profileSettings)
         coordinator.parent = self
         navigationController.present(nvc, animated: true, completion: nil)
         childCoordinators.append(coordinator)

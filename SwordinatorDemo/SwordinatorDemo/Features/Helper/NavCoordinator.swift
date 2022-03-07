@@ -25,7 +25,7 @@ extension NavCoordinator {
     
     func navigateToTask(task: Task) {
         let nvc = UINavigationController()
-        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task)
+        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, step: .taskDetail(task: task, completion: nil))
         coordinator.parent = self
         navigationController.present(nvc, animated: true, completion: nil)
         childCoordinators.append(coordinator)

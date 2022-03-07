@@ -25,10 +25,16 @@ class TaskListViewController: UIViewController, Coordinated {
     
     // MARK: UI
     lazy var overlayView: UIButton = {
-        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.hideAddTaskView()
-        }))
+        let view: UIButton
+        if #available(iOS 14.0, *) {
+            view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.hideAddTaskView()
+            }))
+        } else {
+            view = UIButton(type: .custom)
+            view.addTarget(self, action: #selector(onOverlayPressed), for: .touchUpInside)
+        }
         view.backgroundColor = .black.withAlphaComponent(0.75)
         view.alpha = 0
         return view
@@ -75,7 +81,7 @@ class TaskListViewController: UIViewController, Coordinated {
             view.backgroundColor = .systemBlue
             view.tintColor = .white
             return view
-        } else {
+        } else if #available(iOS 14.0, *) {
             let view = UIButton(type: .system, primaryAction: UIAction(handler: { [weak self] _ in
                 guard let self = self else { return }
                 self.showAddTaskView()
@@ -85,6 +91,15 @@ class TaskListViewController: UIViewController, Coordinated {
             view.backgroundColor = .systemBlue
             view.tintColor = .white
             view.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            return view
+        } else {
+            let view = UIButton(type: .system)
+            view.setImage(UIImage(systemName: "plus"), for: .normal)
+            view.layer.cornerRadius = 25
+            view.backgroundColor = .systemBlue
+            view.tintColor = .white
+            view.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            view.addTarget(self, action: #selector(onAddTaskPressed), for: .touchUpInside)
             return view
         }
     }()
@@ -195,6 +210,16 @@ class TaskListViewController: UIViewController, Coordinated {
         } completion: { finished in
             //
         }
+    }
+    
+    @objc
+    func onOverlayPressed() {
+        self.showAddTaskView()
+    }
+    
+    @objc
+    func onAddTaskPressed() {
+        self.showAddTaskView()
     }
 }
 

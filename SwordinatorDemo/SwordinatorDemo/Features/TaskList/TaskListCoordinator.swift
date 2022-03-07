@@ -19,31 +19,27 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
     
     let services: Services
 
-    init(navigationController: UINavigationController, services: Services) {
+    init(navigationController: UINavigationController, services: Services, step: AppStep) {
         self.navigationController = navigationController
         self.services = services
-        start()
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        print("➡️ navigated to \(String(describing: Self.self))")
-        
-        let vm = TaskListViewModel(services: services)
-        let vc = TaskListViewController(viewModel: vm)
-        vc.coordinator = self
-        self.navigationController.setViewControllers([
-            vc
-        ], animated: false)
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         guard let step = step as? AppStep else { return }
         switch step {
-            
+        case .taskList:
+            navigateToTaskList()
         case .taskDetail(let task, let completion):
             showTaskDetail(task: task, completion: completion)
         case .taskDetailCompleted:
@@ -78,9 +74,17 @@ class TaskListCoordinator: NavigationControllerCoordinator, ParentCoordinated, D
 // MARK: - Actions
 extension TaskListCoordinator
 {
+    private func navigateToTaskList() {
+        let vm = TaskListViewModel(services: services)
+        let vc = TaskListViewController(viewModel: vm)
+        vc.coordinator = self
+        self.navigationController.setViewControllers([
+            vc
+        ], animated: false)
+    }
     private func showTaskDetail(task: Task, completion: (() -> Void)?) {
         let nvc = UINavigationController()
-        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, task: task, taskCompletion: completion)
+        let coordinator = TaskDetailCoordinator(navigationController: nvc, services: services, step: .taskDetail(task: task, completion: completion))
         coordinator.parent = self
         navigationController.present(nvc, animated: true, completion: nil)
         childCoordinators.append(coordinator)

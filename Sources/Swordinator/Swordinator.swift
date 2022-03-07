@@ -2,13 +2,18 @@ import UIKit
 
 public protocol Coordinator: AnyObject
 {
+    var id: UUID { get }
     var childCoordinators: [Coordinator] { get set }
-    func start()
+    func start(step: Step)
     func handle(step: Step)
     func releaseChild<T: Coordinator>(type: T.Type)
 }
 
 public extension Coordinator {
+    var id: UUID { return UUID() }
+    func start(step: Step) {
+        handle(step: step)
+    }
     func handle(step: Step) {
         print("⚠️ step handler is not implemented for \(String(describing: Self.self))")
     }

@@ -12,6 +12,12 @@ import MBProgressHUD
 
 enum AppStep: Step {
     
+    // tabbar
+    case dashboard
+    
+    // task list
+    case taskList
+    
     // task
     case taskDetail(task: Task, completion: (() -> Void)?)
     case taskDetailLazy(id: Int)
@@ -20,6 +26,7 @@ enum AppStep: Step {
     case taskDetailCompleted
     
     // auth
+    case auth
     case authWithSIWA
     case authCompleted
     case logout

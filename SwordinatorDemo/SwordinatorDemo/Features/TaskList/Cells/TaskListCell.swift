@@ -20,10 +20,16 @@ class TaskListCell: UITableViewCell {
     }
     
     lazy var completedButton: UIButton = {
-        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.toggleCompleted()
-        }))
+        let view: UIButton
+        if #available(iOS 14.0, *) {
+            view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.toggleCompleted()
+            }))
+        } else {
+            view = UIButton(type: .custom)
+            view.addTarget(self, action: #selector(onCompletedPressed), for: .touchUpInside)
+        }
         view.setImage(UIImage(systemName: "circle"), for: .normal)
         view.setImage(UIImage(systemName: "checkmark.circle"), for: .selected)
         view.tintColor = .label
@@ -86,5 +92,10 @@ class TaskListCell: UITableViewCell {
         super.prepareForReuse()
         completedButton.isSelected = false
         self.titleLabel.attributedText = NSAttributedString()
+    }
+    
+    @objc
+    private func onCompletedPressed() {
+        self.toggleCompleted()
     }
 }

@@ -27,13 +27,13 @@ class NoStepCoordinator: NavigationControllerCoordinator, AnyParentCoordinated
     
     let services: AppServices
     
-    init(navigationController: UINavigationController, services: AppServices) {
+    init(navigationController: UINavigationController, services: AppServices, step: AppStep) {
         self.navigationController = navigationController
         self.services = services
-        start()
+        start(step: step)
     }
     
-    func start() {
+    func start(step: Step) {
         let vc = NoStepViewController()
         vc.coordinator = self
         navigationController.setViewControllers([
