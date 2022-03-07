@@ -39,11 +39,16 @@ class TaskDetailViewController: UIViewController, Coordinated {
     }
     
     lazy var closeBarButton: UIBarButtonItem = {
-        let view = UIBarButtonItem(systemItem: .close, primaryAction: UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.coordinator?.handle(step: AppStep.dismiss)
-        }), menu: nil)
-        return view
+        if #available(iOS 14.0, *) {
+            let view = UIBarButtonItem(systemItem: .close, primaryAction: UIAction(handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.coordinator?.handle(step: AppStep.dismiss)
+            }), menu: nil)
+            return view
+        } else {
+            let view = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(onDismissPressed))
+            return view
+        }
     }()
     
     init(viewModel: TaskDetailViewModel) {
@@ -72,10 +77,16 @@ class TaskDetailViewController: UIViewController, Coordinated {
         //coordinator?.handle(event: .pop)
     }
     
+    @objc
+    func onDismissPressed() {
+        viewModel.onTaskCompletion?()
+        self.coordinator?.handle(step: AppStep.dismiss)
+    }
 }
 
 extension TaskDetailViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        viewModel.onTaskCompletion?()
         coordinator?.handle(step: AppStep.close)
     }
 }

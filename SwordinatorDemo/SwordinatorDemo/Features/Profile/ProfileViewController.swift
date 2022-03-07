@@ -37,9 +37,14 @@ class ProfileViewController: UIViewController, Coordinated {
     }
     
     lazy var settingsBarButton: UIBarButtonItem = {
-        let view = UIBarButtonItem(title: nil, image: UIImage(systemName: "gearshape"), primaryAction: UIAction(handler: { [weak self] _ in
-            self?.coordinator?.handle(step: AppStep.profileSettings)
-        }), menu: nil)
+        let view: UIBarButtonItem
+        if #available(iOS 14.0, *) {
+            view = UIBarButtonItem(title: nil, image: UIImage(systemName: "gearshape"), primaryAction: UIAction(handler: { [weak self] _ in
+                self?.coordinator?.handle(step: AppStep.profileSettings)
+            }), menu: nil)
+        } else {
+            view = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSettingsPressed))
+        }
         return view
     }()
     
@@ -52,7 +57,12 @@ class ProfileViewController: UIViewController, Coordinated {
             view.layer.cornerRadius = 40
             return view
         } else {
-            let view = UIButton(type: .custom, primaryAction: nil)
+            let view: UIButton
+            if #available(iOS 14.0, *) {
+                view = UIButton(type: .custom, primaryAction: nil)
+            } else {
+                view = UIButton(type: .custom)
+            }
             view.isUserInteractionEnabled = false
             view.backgroundColor = .systemGray3
             view.layer.cornerRadius = 40
@@ -94,4 +104,8 @@ class ProfileViewController: UIViewController, Coordinated {
         super.viewWillDisappear(animated)
     }
     
+    @objc
+    private func onSettingsPressed() {
+        coordinator?.handle(step: AppStep.profileSettings)
+    }
 }

@@ -5,7 +5,7 @@ Swordinator is a minimal, lightweight and easy customizable navigation framework
 
 [![Tests](https://github.com/laubengaier/Swordinator/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/laubengaier/Swordinator/actions/workflows/ci.yml) ![SPM Compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen)
 ## Requirements
-iOS 14.0+, Swift 5.0+
+iOS 13.0+, Swift 5.0+
 
 ## Installation
 
@@ -58,17 +58,17 @@ class AppCoordinator: Coordinator
     
     let services: AppServices
     
-    init(window: UIWindow, services: AppServices) {
+    init(window: UIWindow, services: AppServices, step: AppStep) {
         self.window = window
         self.services = services
-        start()
+        start(step: step)
     }
     
-    func start() {
+    func start(step: Step) {
         if services.isAuthenticated {
-            self.showTaskList()
+            handle(step: .dashboard)
         } else {
-            self.showLogin()
+            handle(step: .auth)
         }
     }
     

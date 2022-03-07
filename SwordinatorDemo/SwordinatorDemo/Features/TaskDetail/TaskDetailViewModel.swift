@@ -10,8 +10,9 @@ import Foundation
 class TaskDetailViewModel {
     
     var task: Task
-    
-    init(task: Task) {
+    var onTaskCompletion: (() -> Void)?
+    init(task: Task, onTaskCompletion: (() -> Void)?) {
         self.task = task
+        self.onTaskCompletion = onTaskCompletion
     }
 }

@@ -18,28 +18,28 @@ class SyncCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deepl
     
     let services: AppServices
     
-    init(navigationController: UINavigationController, services: AppServices) {
+    init(navigationController: UINavigationController, services: AppServices, step: AppStep) {
         self.navigationController = navigationController
         self.navigationController.setNavigationBarHidden(true, animated: false)
         self.services = services
-        start()
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        print("➡️ navigated to \(String(describing: Self.self))")
-        
-        let vc = SyncViewController()
-        vc.coordinator = self
-        navigationController.setViewControllers([vc], animated: false)
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         guard let step = step as? AppStep else { return }
         switch step {
+        case .sync:
+            navigateToSync()
         case .syncCompleted:
             parent?.handle(step: step)
         default:
@@ -50,5 +50,9 @@ class SyncCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deepl
 
 // MARK: - Actions
 extension SyncCoordinator {
-    
+    func navigateToSync() {
+        let vc = SyncViewController()
+        vc.coordinator = self
+        navigationController.setViewControllers([vc], animated: false)
+    }
 }

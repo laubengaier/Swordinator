@@ -18,28 +18,28 @@ class LoginCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deep
     
     let services: AppServices
     
-    init(navigationController: UINavigationController, services: AppServices) {
+    init(navigationController: UINavigationController, services: AppServices, step: AppStep) {
         self.navigationController = navigationController
         self.services = services
-        start()
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        let vm = LoginViewModel(services: services)
-        let vc = LoginViewController(coordinator: self, viewModel: vm)
-        navigationController.setViewControllers([
-            vc
-        ], animated: false)
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         // handle steps
         guard let step = step as? AppStep else { return }
         switch step {
+        case .auth:
+            navigateToLogin()
         case .authWithSIWA:
             print("🙋‍♂️ logged in with siwa")
             parent?.handle(step: AppStep.authCompleted)
@@ -55,5 +55,11 @@ class LoginCoordinator: NavigationControllerCoordinator, ParentCoordinated, Deep
 
 // MARK: - Actions
 extension LoginCoordinator {
-    
+    private func navigateToLogin() {
+        let vm = LoginViewModel(services: services, coordinator: self)
+        let vc = LoginViewController(viewModel: vm)
+        navigationController.setViewControllers([
+            vc
+        ], animated: false)
+    }
 }

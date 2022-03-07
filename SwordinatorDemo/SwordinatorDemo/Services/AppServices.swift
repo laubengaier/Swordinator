@@ -39,7 +39,7 @@ class AppServices: Services {
     
     // Sync
     var isSyncRequired: Bool {
-        return false
+        return true
     }
     
     // Data

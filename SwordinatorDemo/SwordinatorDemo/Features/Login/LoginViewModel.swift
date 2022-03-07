@@ -6,15 +6,18 @@
 //
 
 import Foundation
+import Swordinator
 
-class LoginViewModel {
+class LoginViewModel: Coordinated {
     
     let services: AppServices
+    weak var coordinator: Coordinator?
     
     var onAuthCompleted: (() -> Void)?
     
-    init(services: AppServices) {
+    init(services: AppServices, coordinator: LoginCoordinator) {
         self.services = services
+        self.coordinator = coordinator
     }
     
     deinit {
@@ -25,6 +28,7 @@ class LoginViewModel {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             self.services.userDidLogin()
             self.onAuthCompleted?()
+            self.coordinator?.handle(step: AppStep.authWithSIWA)
         }
     }
 }

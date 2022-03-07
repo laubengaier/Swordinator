@@ -11,13 +11,11 @@ import SnapKit
 import MBProgressHUD
 import Swordinator
 
-class LoginViewController: UIViewController, Coordinated {
+class LoginViewController: UIViewController {
     
-    weak var coordinator: Coordinator?
     let viewModel: LoginViewModel
     
-    init(coordinator: LoginCoordinator, viewModel: LoginViewModel) {
-        self.coordinator = coordinator
+    init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,11 +37,17 @@ class LoginViewController: UIViewController, Coordinated {
     }()
     
     lazy var siwaButton: UIButton = {
-        let view = UIButton(type: .system, primaryAction: UIAction(handler: { [weak self] (_) in
-            guard let self = self else { return }
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-            self.viewModel.loginWithSIWA()
-        }))
+        let view: UIButton
+        if #available(iOS 14.0, *) {
+            view = UIButton(type: .system, primaryAction: UIAction(handler: { [weak self] (_) in
+                guard let self = self else { return }
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+                self.viewModel.loginWithSIWA()
+            }))
+        } else {
+            view = UIButton(type: .system)
+            view.addTarget(self, action: #selector(onSIWALoginPressed), for: .touchUpInside)
+        }
         view.setTitle("Sign in with Apple", for: .normal)
         view.setTitleColor(.systemBackground, for: .normal)
         view.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
@@ -69,8 +73,13 @@ class LoginViewController: UIViewController, Coordinated {
         viewModel.onAuthCompleted = { [weak self] in
             guard let self = self else { return }
             MBProgressHUD.hide(for: self.view, animated: true)
-            self.coordinator?.handle(step: AppStep.authWithSIWA)
         }
+    }
+    
+    @objc
+    private func onSIWALoginPressed() {
+        MBProgressHUD.showAdded(to: view, animated: true)
+        viewModel.loginWithSIWA()
     }
 
 }

@@ -22,30 +22,27 @@ class ProfileSettingsCoordinator: NavigationControllerCoordinator, ParentCoordin
         case close
     }
     
-    init(navigationController: UINavigationController, services: Services) {
+    init(navigationController: UINavigationController, services: Services, step: AppStep) {
         self.navigationController = navigationController
         self.services = services
-        start()
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        print("➡️ navigated to \(String(describing: Self.self))")
-        
-        let vm = ProfileSettingsViewModel(services: services)
-        let vc = ProfileSettingsViewController(viewModel: vm)
-        vc.coordinator = self
-        self.navigationController.setViewControllers([
-            vc
-        ], animated: false)
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         guard let step = step as? AppStep else { return }
         switch step {
+        case .profileSettings:
+            navigateToProfileSettings()
         case .logout:
             logout()
         case .dismiss:
@@ -68,6 +65,15 @@ class ProfileSettingsCoordinator: NavigationControllerCoordinator, ParentCoordin
 
 // MARK: - Actions
 extension ProfileSettingsCoordinator {
+    private func navigateToProfileSettings() {
+        let vm = ProfileSettingsViewModel(services: services)
+        let vc = ProfileSettingsViewController(viewModel: vm)
+        vc.coordinator = self
+        self.navigationController.setViewControllers([
+            vc
+        ], animated: false)
+    }
+    
     private func logout() {
         parent?.handle(step: AppStep.logout)
     }

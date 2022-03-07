@@ -18,51 +18,32 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
     
     let services: AppServices
 
-    init(tabBarController: UITabBarController, services: AppServices) {
+    init(tabBarController: UITabBarController, services: AppServices, step: AppStep) {
         self.tabBarController = tabBarController
         self.services = services
         super.init()
-        start()
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        print("➡️ navigated to \(String(describing: Self.self))")
-        
-        tabBarController.delegate = self
-        
-        let nvc1 = UINavigationController()
-        nvc1.tabBarItem = UITabBarItem(title: "Tasks", image: UIImage(systemName: "app"), tag: 0)
-        let taskListCoordinator = TaskListCoordinator(navigationController: nvc1, services: services)
-        taskListCoordinator.parent = self
-        childCoordinators.append(taskListCoordinator)
-        
-        let nvc2 = UINavigationController()
-        nvc2.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
-        let profileCoordinator = ProfileCoordinator(navigationController: nvc2, services: services)
-        profileCoordinator.parent = self
-        childCoordinators.append(profileCoordinator)
-
-
-        tabBarController.setViewControllers([
-            nvc1,
-            nvc2
-        ], animated: false)
-
-        // assign the selected root & update via tabbar delegate
-        rootCoordinator = taskListCoordinator
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         guard let step = step as? AppStep else { return }
         switch step {
+        case .dashboard:
+            navigateToDashboard()
         case .profileSettings:
-            self.showProfile(shouldSelect: true)
+            showProfile(shouldSelect: true)
         case .logout:
-            self.logout()
+            logout()
         default:
             ()
         }
@@ -72,13 +53,13 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
         if let deepLink = deepLink as? AppDeeplinkStep {
             switch deepLink {
             case .tasks:
-                self.showTasks(shouldSelect: true)
+                showTasks(shouldSelect: true)
                 return
             case .profile:
-                self.showProfile(shouldSelect: true)
+                showProfile(shouldSelect: true)
                 return
             case .profileSettings:
-                self.showProfileSettings()
+                showProfileSettings()
                 return
             default:
                 ()
@@ -94,6 +75,30 @@ class DashboardCoordinator: NSObject, TabBarControllerCoordinator, ParentCoordin
 
 // MARK: - Actions
 extension DashboardCoordinator {
+    private func navigateToDashboard() {
+        tabBarController.delegate = self
+        
+        let nvc1 = UINavigationController()
+        nvc1.tabBarItem = UITabBarItem(title: "Tasks", image: UIImage(systemName: "app"), tag: 0)
+        let taskListCoordinator = TaskListCoordinator(navigationController: nvc1, services: services, step: .taskList)
+        taskListCoordinator.parent = self
+        childCoordinators.append(taskListCoordinator)
+        
+        let nvc2 = UINavigationController()
+        nvc2.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
+        let profileCoordinator = ProfileCoordinator(navigationController: nvc2, services: services, step: .profile)
+        profileCoordinator.parent = self
+        childCoordinators.append(profileCoordinator)
+
+
+        tabBarController.setViewControllers([
+            nvc1,
+            nvc2
+        ], animated: false)
+
+        // assign the selected root & update via tabbar delegate
+        rootCoordinator = taskListCoordinator
+    }
     private func showTasks(shouldSelect: Bool = false) {
         guard
             let taskListCoordinator = childCoordinators.filter({ $0 is TaskListCoordinator }).first as? TaskListCoordinator

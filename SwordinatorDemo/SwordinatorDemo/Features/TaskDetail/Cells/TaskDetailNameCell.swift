@@ -16,11 +16,17 @@ class TaskDetailNameCell: UITableViewCell {
     var onChangeName: ((String?) -> Void)?
     
     lazy var completedButton: UIButton = {
-        let view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.completedButton.isSelected = !self.completedButton.isSelected
-            self.onChangeCompleted?(self.completedButton.isSelected)
-        }))
+        let view: UIButton
+        if #available(iOS 14.0, *) {
+            view = UIButton(type: .custom, primaryAction: UIAction(handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.completedButton.isSelected = !self.completedButton.isSelected
+                self.onChangeCompleted?(self.completedButton.isSelected)
+            }))
+        } else {
+            view = UIButton(type: .system)
+            view.addTarget(self, action: #selector(onCompletedPressed), for: .touchUpInside)
+        }
         view.setImage(UIImage(systemName: "circle"), for: .normal)
         view.setImage(UIImage(systemName: "checkmark.circle"), for: .selected)
         view.tintColor = .label
@@ -66,6 +72,12 @@ class TaskDetailNameCell: UITableViewCell {
     func setup(task: Task) {
         self.nameTextField.text = task.name
         self.completedButton.isSelected = task.completed
+    }
+    
+    @objc
+    private func onCompletedPressed() {
+        completedButton.isSelected = !completedButton.isSelected
+        onChangeCompleted?(completedButton.isSelected)
     }
 }
 

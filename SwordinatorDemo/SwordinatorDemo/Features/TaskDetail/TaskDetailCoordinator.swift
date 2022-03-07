@@ -17,40 +17,35 @@ class TaskDetailCoordinator: NavCoordinator, Deeplinkable
     var childCoordinators: [Coordinator] = []
     
     let services: Services
-    var task: Task
-    var taskCompletion: (() -> Void)?
     
     enum Event {
         case close
     }
     
-    init(navigationController: UINavigationController, services: Services, task: Task, taskCompletion: (() -> Void)? = nil) {
+    init(navigationController: UINavigationController, services: Services, step: AppStep) {
         self.navigationController = navigationController
         self.services = services
-        self.task = task
-        self.taskCompletion = taskCompletion
-        start()
+        //self.taskCompletion = taskCompletion
+        start(step: step)
     }
     
     deinit {
         print("🗑 \(String(describing: Self.self))")
     }
     
-    func start() {
-        print("➡️ navigated to \(String(describing: Self.self))")
+    func start(step: Step) {
+        print("⬇️ Navigated to \(String(describing: Self.self))")
+        handle(step: step)
         
-        let vm = TaskDetailViewModel(task: task)
-        let vc = TaskDetailViewController(viewModel: vm)
-        vc.coordinator = self
-        self.navigationController.setViewControllers([
-            vc
-        ], animated: false)
         //navigationController.pushViewController(vc, animated: true)
     }
     
     func handle(step: Step) {
+        print("  ➡️ \(String(describing: Self.self)) -> \(step)")
         guard let step = step as? AppStep else { return }
         switch step {
+        case .taskDetail(let task, let completion):
+            navigateToTaskDetail(task: task, completion: completion)
         case .taskDetailReminder(let task):
             showReminder(task: task)
         case .taskDetailPriority(let task):
@@ -75,6 +70,15 @@ class TaskDetailCoordinator: NavCoordinator, Deeplinkable
 
 // MARK: - Actions
 extension TaskDetailCoordinator {
+    private func navigateToTaskDetail(task: Task, completion: (() -> Void)?) {
+        let vm = TaskDetailViewModel(task: task, onTaskCompletion: completion)
+        let vc = TaskDetailViewController(viewModel: vm)
+        vc.coordinator = self
+        self.navigationController.setViewControllers([
+            vc
+        ], animated: false)
+    }
+    
     private func showReminder(task: Task) {
         let vc = TaskDetailReminderViewController()
         navigationController.pushViewController(vc, animated: true)
@@ -86,12 +90,10 @@ extension TaskDetailCoordinator {
     }
     
     private func close() {
-        taskCompletion?()
         endNavigateToTask(animated: false, shouldDismiss: false, completion: nil)
     }
     
     private func dismiss() {
-        taskCompletion?()
         endNavigateToTask(animated: true, shouldDismiss: true, completion: nil)
     }
 }
